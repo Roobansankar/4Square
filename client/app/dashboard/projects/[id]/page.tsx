@@ -101,7 +101,7 @@ export default function ProjectDetailPage() {
       key: 'overview',
       label: 'Overview',
       children: (
-        <Descriptions column={2} bordered size="middle">
+        <Descriptions column={{ xs: 1, sm: 2 }} bordered size="middle">
           <Descriptions.Item label="Project ID">
             <Text code style={{ color: '#f97316' }}>{project.id}</Text>
           </Descriptions.Item>
@@ -119,7 +119,7 @@ export default function ProjectDetailPage() {
           <Descriptions.Item label="Progress" span={2}>
             <Progress
               percent={project.progress}
-              style={{ width: 240 }}
+              style={{ maxWidth: 240, width: '100%' }}
               strokeColor={project.progress >= 100 ? '#52c41a' : '#f97316'}
             />
           </Descriptions.Item>
@@ -229,14 +229,14 @@ export default function ProjectDetailPage() {
       label: 'Accounts',
       children: (
         <div>
-          <Row gutter={16} style={{ marginBottom: 24 }}>
-            <Col span={8}>
+          <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+            <Col xs={24} sm={8}>
               <Statistic title="Estimated Budget" value={project.estimatedBudget} formatter={(v) => formatCurrency(Number(v))} />
             </Col>
-            <Col span={8}>
+            <Col xs={24} sm={8}>
               <Statistic title="Amount Spent" value={project.estimatedBudget * (project.progress / 100)} formatter={(v) => formatCurrency(Number(v))} valueStyle={{ color: '#f97316' }} />
             </Col>
-            <Col span={8}>
+            <Col xs={24} sm={8}>
               <Statistic title="Balance" value={project.estimatedBudget * (1 - project.progress / 100)} formatter={(v) => formatCurrency(Number(v))} valueStyle={{ color: '#52c41a' }} />
             </Col>
           </Row>
@@ -260,7 +260,7 @@ export default function ProjectDetailPage() {
       children: dummyReports.length ? (
         <Space direction="vertical" style={{ width: '100%' }} size={8}>
           {dummyReports.map((report) => (
-            <div key={report.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid var(--border)', borderRadius: 8, padding: 12 }}>
+            <div key={report.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3" style={{ border: '1px solid var(--border)', borderRadius: 8, padding: 12 }}>
               <Space>
                 <FileTextOutlined style={{ color: '#f97316', fontSize: 18 }} />
                 <div>
@@ -299,7 +299,7 @@ export default function ProjectDetailPage() {
         }
       />
 
-      <div style={{ background: 'var(--card)', borderRadius: 12, padding: 24 }}>
+      <div className="p-4 sm:p-6" style={{ background: 'var(--card)', borderRadius: 12 }}>
         <Tabs defaultActiveKey="overview" items={tabItems} />
       </div>
     </div>

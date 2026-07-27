@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Building2, Plus, Edit2, Trash2, X, Save } from 'lucide-react';
+import { Table, Button, Input, Select, Drawer, Form, Space, Typography, Popconfirm, message, Tag } from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined, ShopOutlined } from '@ant-design/icons';
 import PageHeader from '@/components/PageHeader';
-import SearchBar from '@/components/SearchBar';
 import vendorsData from '@/data/vendors.json';
+
+const { Text } = Typography;
 
 interface VendorRecord {
   id: string;
@@ -20,27 +22,30 @@ interface VendorRecord {
 
 const STORAGE_KEY = '4square-vendors';
 
-const emptyForm = {
-  vendorName: '',
-  gstNumber: '',
-  contactNumber: '',
-  additionalNumber: '',
-  address: '',
-  state: '',
-  country: '',
-  category: 'Electrical' as VendorRecord['category'],
+const categoryColors: Record<string, string> = {
+  Electrical: 'blue',
+  Plumbing: 'cyan',
+  Painter: 'orange',
+  Extra: 'default',
 };
 
 export default function VendorsPage() {
-  const [search, setSearch] = useState('');
   const [vendors, setVendors] = useState<VendorRecord[]>([]);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState(emptyForm);
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('All');
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [editingVendor, setEditingVendor] = useState<VendorRecord | null>(null);
+  const [form] = Form.useForm();
+  const [dw, setDw] = useState(520);
+
+  const openDrawer = (fn: () => void) => {
+    setDw(window.innerWidth < 768 ? window.innerWidth - 1 : 520);
+    fn();
+  };
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-
     try {
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (stored) {
@@ -71,151 +76,272 @@ export default function VendorsPage() {
 
   const filtered = vendors.filter((vendor) => {
     const query = search.toLowerCase();
-    return !query || vendor.vendorName.toLowerCase().includes(query) || vendor.category.toLowerCase().includes(query) || vendor.gstNumber.toLowerCase().includes(query);
+    const matchSearch = !query ||
+      vendor.vendorName.toLowerCase().includes(query) ||
+      vendor.category.toLowerCase().includes(query) ||
+      vendor.gstNumber.toLowerCase().includes(query) ||
+      vendor.contactNumber.toLowerCase().includes(query);
+    const matchFilter = filter === 'All' || vendor.category === filter;
+    return matchSearch && matchFilter;
   });
 
   const openNewForm = () => {
-    setEditingId(null);
-    setFormData(emptyForm);
-    setIsFormOpen(true);
+    setEditingVendor(null);
+    form.resetFields();
+    form.setFieldsValue({ category: 'Electrical', country: 'India' });
+    openDrawer(() => setDrawerOpen(true));
   };
 
   const openEditForm = (vendor: VendorRecord) => {
-    setEditingId(vendor.id);
-    setFormData({ ...vendor });
-    setIsFormOpen(true);
+    setEditingVendor(vendor);
+    form.setFieldsValue(vendor);
+    openDrawer(() => setDrawerOpen(true));
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Delete this vendor?')) {
-      setVendors((prev) => prev.filter((vendor) => vendor.id !== id));
-    }
+    setVendors((prev) => prev.filter((v) => v.id !== id));
+    message.success('Vendor deleted');
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const handleSubmit = (values: Record<string, unknown>) => {
+    const raw = values as unknown as VendorRecord;
     const payload: VendorRecord = {
-      id: editingId || `VEN-${Date.now()}`,
-      vendorName: formData.vendorName.trim(),
-      gstNumber: formData.gstNumber.trim(),
-      contactNumber: formData.contactNumber.trim(),
-      additionalNumber: formData.additionalNumber.trim(),
-      address: formData.address.trim(),
-      state: formData.state.trim(),
-      country: formData.country.trim() || 'India',
-      category: formData.category,
+      id: editingVendor?.id || `VEN-${Date.now()}`,
+      vendorName: raw.vendorName.trim(),
+      gstNumber: raw.gstNumber?.trim() || '',
+      contactNumber: raw.contactNumber.trim(),
+      additionalNumber: raw.additionalNumber?.trim() || '',
+      address: raw.address?.trim() || '',
+      state: raw.state?.trim() || '',
+      country: raw.country?.trim() || 'India',
+      category: raw.category || 'Electrical',
     };
 
     if (!payload.vendorName || !payload.contactNumber) {
-      window.alert('Please enter the vendor name and contact number.');
+      message.error('Please enter vendor name and contact number');
       return;
     }
 
-    if (editingId) {
-      setVendors((prev) => prev.map((vendor) => (vendor.id === editingId ? payload : vendor)));
+    if (editingVendor) {
+      setVendors((prev) => prev.map((v) => (v.id === editingVendor.id ? payload : v)));
+      message.success('Vendor updated');
     } else {
       setVendors((prev) => [payload, ...prev]);
+      message.success('Vendor added successfully');
     }
 
-    setIsFormOpen(false);
-    setEditingId(null);
-    setFormData(emptyForm);
+    setDrawerOpen(false);
+    setEditingVendor(null);
+    form.resetFields();
   };
 
-  return (
-    <div className="space-y-5">
-      <PageHeader title="Vendors" subtitle={`${vendors.length} vendors`} icon={<Building2 size={18} />}
-        action={<button onClick={openNewForm} className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-xl transition-colors"><Plus size={16} />Add Vendor</button>} />
-
-      <SearchBar value={search} onChange={setSearch} placeholder="Search vendors..." />
-
-      {isFormOpen && (
-        <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] shadow-sm p-4 sm:p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-lg font-semibold text-[var(--foreground)]">{editingId ? 'Edit Vendor' : 'Add Vendor'}</h3>
-              <p className="text-sm text-[var(--muted-foreground)]">Store vendor contact and registration details.</p>
-            </div>
-            <button onClick={() => setIsFormOpen(false)} className="p-2 rounded-lg hover:bg-[var(--muted)]">
-              <X size={16} />
-            </button>
+  const columns = [
+    {
+      title: '#',
+      key: 'sno',
+      width: 50,
+      render: (_: unknown, __: unknown, index: number) => (
+        <Text style={{ fontSize: 12, color: '#999' }}>{index + 1}</Text>
+      ),
+    },
+    {
+      title: 'Vendor Name',
+      dataIndex: 'vendorName',
+      key: 'vendorName',
+      width: 200,
+      render: (name: string) => <Text strong style={{ fontSize: 13 }}>{name}</Text>,
+    },
+    {
+      title: 'GST Number',
+      dataIndex: 'gstNumber',
+      key: 'gstNumber',
+      width: 160,
+      render: (gst: string) => gst
+        ? <Text code style={{ fontSize: 11 }}>{gst}</Text>
+        : <Text type="secondary" style={{ fontSize: 12 }}>—</Text>,
+    },
+    {
+      title: 'Contact',
+      dataIndex: 'contactNumber',
+      key: 'contactNumber',
+      width: 160,
+      render: (phone: string, record: VendorRecord) => (
+        <div>
+          <Text style={{ fontSize: 13 }}>{phone}</Text>
+          {record.additionalNumber && (
+            <div><Text type="secondary" style={{ fontSize: 11 }}>{record.additionalNumber}</Text></div>
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Category',
+      dataIndex: 'category',
+      key: 'category',
+      width: 120,
+      render: (cat: string) => <Tag color={categoryColors[cat] || 'default'}>{cat}</Tag>,
+      filters: [
+        { text: 'Electrical', value: 'Electrical' },
+        { text: 'Plumbing', value: 'Plumbing' },
+        { text: 'Painter', value: 'Painter' },
+        { text: 'Extra', value: 'Extra' },
+      ],
+      onFilter: (value: boolean | React.Key, record: VendorRecord) => record.category === value,
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+      width: 200,
+      render: (addr: string, record: VendorRecord) => (
+        <div>
+          {addr && <Text style={{ fontSize: 12 }}>{addr}</Text>}
+          <div>
+            {[record.state, record.country].filter(Boolean).join(', ') && (
+              <Text type="secondary" style={{ fontSize: 11 }}>
+                {[record.state, record.country].filter(Boolean).join(', ')}
+              </Text>
+            )}
           </div>
-
-          <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Vendor name</label>
-              <input value={formData.vendorName} onChange={(event) => setFormData((prev) => ({ ...prev, vendorName: event.target.value }))} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" placeholder="Vendor name" required />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium">GST number</label>
-              <input value={formData.gstNumber} onChange={(event) => setFormData((prev) => ({ ...prev, gstNumber: event.target.value }))} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" placeholder="GST number" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Contact number</label>
-              <input value={formData.contactNumber} onChange={(event) => setFormData((prev) => ({ ...prev, contactNumber: event.target.value }))} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" placeholder="Primary contact" required />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Additional number</label>
-              <input value={formData.additionalNumber} onChange={(event) => setFormData((prev) => ({ ...prev, additionalNumber: event.target.value }))} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" placeholder="Secondary contact" />
-            </div>
-            <div className="space-y-1 md:col-span-2">
-              <label className="text-sm font-medium">Address</label>
-              <textarea value={formData.address} onChange={(event) => setFormData((prev) => ({ ...prev, address: event.target.value }))} rows={2} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" placeholder="Vendor address" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium">State</label>
-              <input value={formData.state} onChange={(event) => setFormData((prev) => ({ ...prev, state: event.target.value }))} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" placeholder="State" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Country</label>
-              <input value={formData.country} onChange={(event) => setFormData((prev) => ({ ...prev, country: event.target.value }))} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" placeholder="Country" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium">Category</label>
-              <select value={formData.category} onChange={(event) => setFormData((prev) => ({ ...prev, category: event.target.value as VendorRecord['category'] }))} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm">
-                <option value="Electrical">Electrical</option>
-                <option value="Plumbing">Plumbing</option>
-                <option value="Painter">Painter</option>
-                <option value="Extra">Extra</option>
-              </select>
-            </div>
-            <div className="md:col-span-2 flex justify-end gap-2 pt-2">
-              <button type="button" onClick={() => setIsFormOpen(false)} className="px-4 py-2 rounded-lg border border-[var(--border)] text-sm font-medium">Cancel</button>
-              <button type="submit" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-500 text-white text-sm font-semibold">
-                <Save size={16} /> {editingId ? 'Update Vendor' : 'Save Vendor'}
-              </button>
-            </div>
-          </form>
         </div>
-      )}
+      ),
+    },
+    {
+      title: '',
+      key: 'actions',
+      width: 90,
+      render: (_: unknown, record: VendorRecord) => (
+        <Space>
+          <Button
+            type="text"
+            icon={<EditOutlined />}
+            onClick={() => openEditForm(record)}
+            style={{ color: '#f97316' }}
+            size="small"
+          />
+          <Popconfirm
+            title="Delete this vendor?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Delete"
+            cancelText="Cancel"
+            okButtonProps={{ danger: true }}
+          >
+            <Button type="text" icon={<DeleteOutlined />} danger size="small" />
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
 
-      <div className="bg-[var(--card)] rounded-xl shadow-sm border border-[var(--border)] overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-[var(--muted)] border-b border-[var(--border)]">
-              <tr>{['Vendor Name', 'GST Number', 'Contact', 'Category', 'Address', 'Actions'].map((header) => <th key={header} className="text-left text-xs font-semibold text-[var(--muted-foreground)] px-4 py-3 whitespace-nowrap">{header}</th>)}</tr>
-            </thead>
-            <tbody>
-              {filtered.map((vendor) => (
-                <tr key={vendor.id} className="border-b border-[var(--border)] last:border-0 hover:bg-[var(--accent)] transition-colors">
-                  <td className="px-4 py-3"><div className="font-medium text-sm text-[var(--foreground)]">{vendor.vendorName}</div></td>
-                  <td className="px-4 py-3 text-xs font-mono text-[var(--muted-foreground)]">{vendor.gstNumber || '—'}</td>
-                  <td className="px-4 py-3 text-xs text-[var(--muted-foreground)]">{vendor.contactNumber}{vendor.additionalNumber ? ` / ${vendor.additionalNumber}` : ''}</td>
-                  <td className="px-4 py-3 text-xs text-[var(--muted-foreground)]">{vendor.category}</td>
-                  <td className="px-4 py-3 text-xs text-[var(--muted-foreground)]">{vendor.address || '—'}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => openEditForm(vendor)} className="p-1.5 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/30 text-orange-600 transition-colors"><Edit2 size={13} /></button>
-                      <button onClick={() => handleDelete(vendor.id)} className="p-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500 transition-colors"><Trash2 size={13} /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+  return (
+    <div>
+      <PageHeader
+        title="Vendors"
+        subtitle={`${vendors.length} vendors`}
+        icon={<ShopOutlined />}
+        action={
+          <Button type="primary" icon={<PlusOutlined />} onClick={openNewForm}>
+            Add Vendor
+          </Button>
+        }
+      />
+
+      <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
+        <Input.Search
+          placeholder="Search vendors..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          allowClear
+          style={{ width: '100%', maxWidth: 320 }}
+        />
+        <Select
+          value={filter}
+          onChange={setFilter}
+          style={{ width: 140 }}
+          options={[
+            { value: 'All', label: 'All Categories' },
+            { value: 'Electrical', label: 'Electrical' },
+            { value: 'Plumbing', label: 'Plumbing' },
+            { value: 'Painter', label: 'Painter' },
+            { value: 'Extra', label: 'Extra' },
+          ]}
+        />
       </div>
+
+      <div style={{ overflowX: 'auto' }}>
+        <Table
+          dataSource={filtered}
+          columns={columns}
+          rowKey="id"
+          bordered
+          pagination={{
+            pageSize: 10,
+            showSizeChanger: true,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} vendors`,
+            size: 'small',
+          }}
+          locale={{
+            emptyText: 'No vendors found. Add your first vendor to get started.',
+          }}
+          style={{ background: '#fff', borderRadius: 12, minWidth: 700 }}
+          size="middle"
+          scroll={{ x: 'max-content' }}
+        />
+      </div>
+
+      <Drawer
+        title={editingVendor ? 'Edit Vendor' : 'Add Vendor'}
+        placement="right"
+        width={dw}
+        open={drawerOpen}
+        onClose={() => { setDrawerOpen(false); setEditingVendor(null); form.resetFields(); }}
+        extra={
+          <Space>
+            <Button onClick={() => { setDrawerOpen(false); setEditingVendor(null); form.resetFields(); }}>Cancel</Button>
+            <Button type="primary" htmlType="submit" icon={<PlusOutlined />} onClick={() => form.submit()}>
+              {editingVendor ? 'Update Vendor' : 'Save Vendor'}
+            </Button>
+          </Space>
+        }
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{ category: 'Electrical', country: 'India' }}
+          requiredMark={false}
+        >
+          <Form.Item label="Vendor name" name="vendorName" rules={[{ required: true, message: 'Please enter vendor name' }]}>
+            <Input placeholder="Vendor name" />
+          </Form.Item>
+          <Form.Item label="GST number" name="gstNumber">
+            <Input placeholder="GST number" />
+          </Form.Item>
+          <Form.Item label="Contact number" name="contactNumber" rules={[{ required: true, message: 'Please enter contact number' }]}>
+            <Input placeholder="Primary contact" />
+          </Form.Item>
+          <Form.Item label="Additional number" name="additionalNumber">
+            <Input placeholder="Secondary contact" />
+          </Form.Item>
+          <Form.Item label="Address" name="address">
+            <Input.TextArea rows={2} placeholder="Vendor address" />
+          </Form.Item>
+          <Form.Item label="State" name="state">
+            <Input placeholder="State" />
+          </Form.Item>
+          <Form.Item label="Country" name="country">
+            <Input placeholder="Country" />
+          </Form.Item>
+          <Form.Item label="Category" name="category">
+            <Select>
+              <Select.Option value="Electrical">Electrical</Select.Option>
+              <Select.Option value="Plumbing">Plumbing</Select.Option>
+              <Select.Option value="Painter">Painter</Select.Option>
+              <Select.Option value="Extra">Extra</Select.Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Drawer>
     </div>
   );
 }

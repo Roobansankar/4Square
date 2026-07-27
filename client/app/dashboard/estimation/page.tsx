@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Table, Button, Tag, Input, Select, Drawer, Form, DatePicker, InputNumber, Space, Typography, Popconfirm, message } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, DownloadOutlined, FolderOpenOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, DownloadOutlined, FolderOpenOutlined, EyeOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import PageHeader from '@/components/PageHeader';
 import projectsData from '@/data/projects.json';
@@ -16,7 +17,7 @@ interface ProjectOption {
   name: string;
 }
 
-interface QuotationRecord {
+export interface QuotationRecord {
   id: string;
   quoteNo: string;
   projectId: string;
@@ -124,6 +125,7 @@ const statusColor: Record<string, string> = {
 };
 
 export default function Page() {
+  const router = useRouter();
   const [projects, setProjects] = useState<ProjectOption[]>([]);
   const [quotations, setQuotations] = useState<QuotationRecord[]>([]);
   const [search, setSearch] = useState('');
@@ -389,6 +391,7 @@ export default function Page() {
       width: 120,
       render: (_: unknown, record: QuotationRecord) => (
         <Space>
+          <Button type="text" icon={<EyeOutlined />} onClick={() => router.push(`/dashboard/estimation/${record.id}`)} style={{ color: '#1677ff' }} size="small" />
           <Button type="text" icon={<DownloadOutlined />} onClick={() => downloadPdf(record)} style={{ color: '#1677ff' }} size="small" />
           <Button type="text" icon={<EditOutlined />} onClick={() => openEditDrawer(record)} style={{ color: '#f97316' }} size="small" />
           <Popconfirm title="Delete this quotation?" onConfirm={() => handleDelete(record.id)} okText="Delete" cancelText="Cancel" okButtonProps={{ danger: true }}>

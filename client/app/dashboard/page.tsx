@@ -34,20 +34,25 @@ const pendingApprovals = [
 ];
 
 const projectColumns = [
-  { title: 'Project', dataIndex: 'name', key: 'name', width: 180,
+  { title: 'Project', dataIndex: 'name', key: 'name',
     render: (name: string, record: { location: string }) => (
-      <div><Text strong style={{ fontSize: 13 }}>{name}</Text><br /><Text type="secondary" style={{ fontSize: 11 }}>{record.location}</Text></div>
+      <div style={{ minWidth: 0 }}>
+        <Text strong className="text-[12px] sm:text-[13px]" ellipsis style={{ display: 'block', maxWidth: 160 }}>{name}</Text>
+        <Text type="secondary" className="text-[10px] sm:text-[11px]" ellipsis>{record.location}</Text>
+      </div>
     ),
   },
-  { title: 'Client', dataIndex: 'client', key: 'client', width: 120 },
-  { title: 'Status', dataIndex: 'status', key: 'status', width: 100,
-    render: (status: string) => <Tag color={status === 'Active' ? 'processing' : status === 'Completed' ? 'success' : 'default'}>{status}</Tag>,
+  { title: 'Client', dataIndex: 'client', key: 'client',
+    render: (client: string) => <Text className="text-[12px] sm:text-[13px]" ellipsis>{client}</Text>,
   },
-  { title: 'Progress', dataIndex: 'completion', key: 'completion', width: 140,
+  { title: 'Status', dataIndex: 'status', key: 'status',
+    render: (status: string) => <Tag color={status === 'Active' ? 'processing' : status === 'Completed' ? 'success' : 'default'} className="text-[11px] sm:text-[12px]">{status}</Tag>,
+  },
+  { title: 'Progress', dataIndex: 'completion', key: 'completion',
     render: (completion: number) => (
-      <Space size={8}>
-        <Progress percent={completion} size="small" showInfo={false} style={{ width: 70, margin: 0 }} strokeColor="#f97316" railColor="#f0f0f0" />
-        <Text style={{ fontSize: 12, color: '#888' }}>{completion}%</Text>
+      <Space size={6} style={{ whiteSpace: 'nowrap' }}>
+        <Progress percent={completion} size="small" showInfo={false} style={{ width: 50, margin: 0 }} strokeColor="#f97316" railColor="#f0f0f0" />
+        <Text className="text-[11px] sm:text-[12px]" style={{ color: '#888' }}>{completion}%</Text>
       </Space>
     ),
   },
@@ -59,45 +64,45 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <Title level={4} style={{ margin: 0 }}>Dashboard</Title>
-        <Text type="secondary" style={{ fontSize: 13 }}>Welcome back, Admin</Text>
+      <div style={{ marginBottom: 16 }}>
+        <Title level={4} className="!text-lg sm:!text-xl" style={{ margin: 0 }}>Dashboard</Title>
+        <Text type="secondary" className="text-[12px] sm:text-[13px]">Welcome back, Admin</Text>
       </div>
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={[12, 12]}>
         <Col xs={12} sm={12} md={6} xl={4} style={{ display: 'flex' }}>
-          <Card size="small" styles={{ body: { padding: '16px 20px', flex: 1 } }} style={{ flex: 1 }}>
-            <Statistic title="Total Projects" value={28} prefix={<FolderOpenOutlined style={{ color: '#f97316', marginRight: 6 }} />} />
-            <div style={{ marginTop: 6, fontSize: 11, color: '#52c41a' }}><ArrowUpOutlined /> +2 this month</div>
+          <Card size="small" className="w-full" styles={{ body: { padding: '12px 14px', flex: 1 } }} style={{ flex: 1 }}>
+            <Statistic title={<span className="text-[10px] sm:text-xs">{'Total Projects'}</span>} valueStyle={{ fontSize: 'clamp(18px, 4vw, 24px)' }} value={28} prefix={<FolderOpenOutlined style={{ color: '#f97316', marginRight: 6 }} />} />
+            <div style={{ marginTop: 4, fontSize: 10, color: '#52c41a' }}><ArrowUpOutlined /> +2 this month</div>
           </Card>
         </Col>
         <Col xs={12} sm={12} md={6} xl={4} style={{ display: 'flex' }}>
-          <Card size="small" styles={{ body: { padding: '16px 20px', flex: 1 } }} style={{ flex: 1 }}>
-            <Statistic title="Active Projects" value={activeProjects} prefix={<ToolOutlined style={{ color: '#f97316', marginRight: 6 }} />} />
-            <div style={{ marginTop: 6, fontSize: 11, color: '#faad14' }}><ClockCircleOutlined /> 3 nearing deadline</div>
+          <Card size="small" className="w-full" styles={{ body: { padding: '12px 14px', flex: 1 } }} style={{ flex: 1 }}>
+            <Statistic title={<span className="text-[10px] sm:text-xs">{'Active Projects'}</span>} valueStyle={{ fontSize: 'clamp(18px, 4vw, 24px)' }} value={activeProjects} prefix={<ToolOutlined style={{ color: '#f97316', marginRight: 6 }} />} />
+            <div style={{ marginTop: 4, fontSize: 10, color: '#faad14' }}><ClockCircleOutlined /> 3 nearing deadline</div>
           </Card>
         </Col>
         <Col xs={12} sm={12} md={6} xl={4} style={{ display: 'flex' }}>
-          <Card size="small" styles={{ body: { padding: '16px 20px', flex: 1 } }} style={{ flex: 1 }}>
-            <Statistic title="Completed" value={completedProjects} prefix={<CheckCircleOutlined style={{ color: '#52c41a', marginRight: 6 }} />} />
-            <div style={{ marginTop: 6, fontSize: 11, color: '#52c41a' }}><ArrowUpOutlined /> +1 this month</div>
+          <Card size="small" className="w-full" styles={{ body: { padding: '12px 14px', flex: 1 } }} style={{ flex: 1 }}>
+            <Statistic title={<span className="text-[10px] sm:text-xs">{'Completed'}</span>} valueStyle={{ fontSize: 'clamp(18px, 4vw, 24px)' }} value={completedProjects} prefix={<CheckCircleOutlined style={{ color: '#52c41a', marginRight: 6 }} />} />
+            <div style={{ marginTop: 4, fontSize: 10, color: '#52c41a' }}><ArrowUpOutlined /> +1 this month</div>
           </Card>
         </Col>
         <Col xs={12} sm={12} md={6} xl={4} style={{ display: 'flex' }}>
-          <Card size="small" styles={{ body: { padding: '16px 20px', flex: 1 } }} style={{ flex: 1 }}>
-            <Statistic title="Total Clients" value={54} prefix={<TeamOutlined style={{ color: '#1677ff', marginRight: 6 }} />} />
-            <div style={{ marginTop: 6, fontSize: 11, color: '#52c41a' }}><ArrowUpOutlined /> +4 new</div>
+          <Card size="small" className="w-full" styles={{ body: { padding: '12px 14px', flex: 1 } }} style={{ flex: 1 }}>
+            <Statistic title={<span className="text-[10px] sm:text-xs">{'Total Clients'}</span>} valueStyle={{ fontSize: 'clamp(18px, 4vw, 24px)' }} value={54} prefix={<TeamOutlined style={{ color: '#1677ff', marginRight: 6 }} />} />
+            <div style={{ marginTop: 4, fontSize: 10, color: '#52c41a' }}><ArrowUpOutlined /> +4 new</div>
           </Card>
         </Col>
         <Col xs={12} sm={12} md={6} xl={4} style={{ display: 'flex' }}>
-          <Card size="small" styles={{ body: { padding: '16px 20px', flex: 1 } }} style={{ flex: 1 }}>
-            <Statistic title="Engineers" value={16} prefix={<UserOutlined style={{ color: '#722ed1', marginRight: 6 }} />} />
+          <Card size="small" className="w-full" styles={{ body: { padding: '12px 14px', flex: 1 } }} style={{ flex: 1 }}>
+            <Statistic title={<span className="text-[10px] sm:text-xs">{'Engineers'}</span>} valueStyle={{ fontSize: 'clamp(18px, 4vw, 24px)' }} value={16} prefix={<UserOutlined style={{ color: '#722ed1', marginRight: 6 }} />} />
           </Card>
         </Col>
         <Col xs={12} sm={12} md={6} xl={4} style={{ display: 'flex' }}>
-          <Card size="small" styles={{ body: { padding: '16px 20px', flex: 1 } }} style={{ flex: 1 }}>
-            <Statistic title="Pending Bills" value="₹8,50,000" prefix={<BellOutlined style={{ color: '#ff4d4f', marginRight: 6 }} />} />
-            <div style={{ marginTop: 6, fontSize: 11, color: '#ff4d4f' }}><ArrowDownOutlined /> 5 overdue</div>
+          <Card size="small" className="w-full" styles={{ body: { padding: '12px 14px', flex: 1 } }} style={{ flex: 1 }}>
+            <Statistic title={<span className="text-[10px] sm:text-xs">{'Pending Bills'}</span>} valueStyle={{ fontSize: 'clamp(16px, 3.5vw, 24px)' }} value="₹8,50,000" prefix={<BellOutlined style={{ color: '#ff4d4f', marginRight: 6 }} />} />
+            <div style={{ marginTop: 4, fontSize: 10, color: '#ff4d4f' }}><ArrowDownOutlined /> 5 overdue</div>
           </Card>
         </Col>
       </Row>
@@ -123,16 +128,17 @@ export default function DashboardPage() {
             extra={<Button type="link" href="/dashboard/projects" style={{ fontSize: 12 }}>View all</Button>}
             styles={{ body: { padding: 0 } }}
           >
-            <Table
+              <div style={{ overflowX: 'auto' }}>
+              <Table
               dataSource={projectsData.filter(p => p.status === 'Active').slice(0, 5)}
               columns={projectColumns}
               rowKey="id"
               pagination={false}
               size="small"
               showHeader={false}
-              style={{ border: 'none', minWidth: 400 }}
-              scroll={{ x: 'max-content' }}
+              style={{ border: 'none' }}
             />
+            </div>
           </Card>
         </Col>
         <Col xs={24} lg={8}>
