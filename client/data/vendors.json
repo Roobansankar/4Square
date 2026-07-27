@@ -1,0 +1,8 @@
+[
+  { "id": "VEN-001", "vendor": "Coimbatore Steel Corp", "material": "Steel & TMT Bars", "gst": "33AABCS1234A1Z5", "phone": "+91 98765 33344", "outstanding": 420000 },
+  { "id": "VEN-002", "vendor": "Lakshmi Cement House", "material": "Cement & Aggregates", "gst": "33AAALC5678B2Z6", "phone": "+91 97654 44455", "outstanding": 185000 },
+  { "id": "VEN-003", "vendor": "Modern Bricks & Tiles", "material": "Bricks, Tiles, Blocks", "gst": "33AAAMB9012C3Z7", "phone": "+91 96543 55566", "outstanding": 95000 },
+  { "id": "VEN-004", "vendor": "Electra Cables Ltd", "material": "Electrical Cables & MCBs", "gst": "33AAAEC3456D4Z8", "phone": "+91 95432 66677", "outstanding": 320000 },
+  { "id": "VEN-005", "vendor": "Plumbing Plus Store", "material": "Pipes & Fittings", "gst": "33AAAPP7890E5Z9", "phone": "+91 94321 77788", "outstanding": 67000 },
+  { "id": "VEN-006", "vendor": "Asian Paints Dist.", "material": "Paints & Coatings", "gst": "33AAAAP1234F6Z0", "phone": "+91 93210 88899", "outstanding": 43000 }
+]

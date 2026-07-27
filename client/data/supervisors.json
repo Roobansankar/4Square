@@ -1,0 +1,8 @@
+[
+  { "id": "SUP-001", "name": "Vikram Patel", "site": "Skyline Tower Residency", "workers": 42, "progress": 62 },
+  { "id": "SUP-002", "name": "Dinesh Raj", "site": "Heritage Hotel Renovation", "workers": 28, "progress": 75 },
+  { "id": "SUP-003", "name": "Anand Kumar", "site": "Metro Commercial Hub", "workers": 35, "progress": 35 },
+  { "id": "SUP-004", "name": "Ramu Selvam", "site": "Industrial Warehouse Block", "workers": 22, "progress": 50 },
+  { "id": "SUP-005", "name": "Bala Sundaram", "site": "Smart Office Complex", "workers": 18, "progress": 17 },
+  { "id": "SUP-006", "name": "Muthu Kumar", "site": "Sunrise Apartments Ph2", "workers": 12, "progress": 8 }
+]

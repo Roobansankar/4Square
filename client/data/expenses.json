@@ -1,0 +1,9 @@
+[
+  { "id": "EXP-001", "category": "Materials", "amount": 850000, "site": "Skyline Tower Residency", "date": "2024-06-15" },
+  { "id": "EXP-002", "category": "Labour", "amount": 420000, "site": "Metro Commercial Hub", "date": "2024-06-18" },
+  { "id": "EXP-003", "category": "Equipment Rent", "amount": 125000, "site": "Heritage Hotel Renovation", "date": "2024-06-20" },
+  { "id": "EXP-004", "category": "Transport", "amount": 45000, "site": "Industrial Warehouse Block", "date": "2024-06-22" },
+  { "id": "EXP-005", "category": "Electrical", "amount": 280000, "site": "Smart Office Complex", "date": "2024-06-24" },
+  { "id": "EXP-006", "category": "Plumbing", "amount": 95000, "site": "Skyline Tower Residency", "date": "2024-06-25" },
+  { "id": "EXP-007", "category": "Miscellaneous", "amount": 32000, "site": "Sunrise Apartments Ph2", "date": "2024-06-28" }
+]

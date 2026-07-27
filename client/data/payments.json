@@ -1,0 +1,9 @@
+[
+  { "id": "PAY-001", "vendor": "Coimbatore Steel Corp", "amount": 250000, "paidDate": "2024-06-15", "mode": "NEFT", "status": "Paid" },
+  { "id": "PAY-002", "vendor": "Lakshmi Cement House", "amount": 95000, "paidDate": "2024-06-18", "mode": "Cheque", "status": "Paid" },
+  { "id": "PAY-003", "vendor": "Modern Bricks & Tiles", "amount": 48000, "paidDate": "2024-06-20", "mode": "UPI", "status": "Paid" },
+  { "id": "PAY-004", "vendor": "Electra Cables Ltd", "amount": 180000, "paidDate": "2024-06-22", "mode": "RTGS", "status": "Pending" },
+  { "id": "PAY-005", "vendor": "Plumbing Plus Store", "amount": 32000, "paidDate": "2024-06-25", "mode": "UPI", "status": "Paid" },
+  { "id": "PAY-006", "vendor": "Asian Paints Dist.", "amount": 28000, "paidDate": "2024-06-28", "mode": "Cheque", "status": "Pending" },
+  { "id": "PAY-007", "vendor": "Coimbatore Steel Corp", "amount": 170000, "paidDate": "2024-07-01", "mode": "NEFT", "status": "Processing" }
+]

@@ -1,0 +1,8 @@
+[
+  { "id": "PO-001", "vendor": "Coimbatore Steel Corp", "amount": 420000, "status": "Delivered", "date": "2024-06-10" },
+  { "id": "PO-002", "vendor": "Lakshmi Cement House", "amount": 185000, "status": "Partial", "date": "2024-06-12" },
+  { "id": "PO-003", "vendor": "Modern Bricks & Tiles", "amount": 95000, "status": "Delivered", "date": "2024-06-14" },
+  { "id": "PO-004", "vendor": "Electra Cables Ltd", "amount": 320000, "status": "Pending", "date": "2024-06-16" },
+  { "id": "PO-005", "vendor": "Plumbing Plus Store", "amount": 67000, "status": "Delivered", "date": "2024-06-18" },
+  { "id": "PO-006", "vendor": "Asian Paints Dist.", "amount": 43000, "status": "Processing", "date": "2024-06-20" }
+]

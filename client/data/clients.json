@@ -1,0 +1,12 @@
+[
+  { "id": "CLT-001", "name": "Ramesh Kumar", "phone": "+91 98765 43210", "email": "ramesh@example.com", "city": "Coimbatore", "projectCount": 3, "status": "Active" },
+  { "id": "CLT-002", "name": "Priya Menon", "phone": "+91 97654 32109", "email": "priya@greenpark.com", "city": "Chennai", "projectCount": 2, "status": "Active" },
+  { "id": "CLT-003", "name": "TechSpace Ltd", "phone": "+91 96543 21098", "email": "info@techspace.in", "city": "Bangalore", "projectCount": 1, "status": "Active" },
+  { "id": "CLT-004", "name": "Meera Constructions", "phone": "+91 95432 10987", "email": "meera@constructions.com", "city": "Madurai", "projectCount": 4, "status": "Active" },
+  { "id": "CLT-005", "name": "Anita Iyer", "phone": "+91 94321 09876", "email": "anita@iyer.in", "city": "Pondicherry", "projectCount": 1, "status": "Inactive" },
+  { "id": "CLT-006", "name": "Lakshmi Hotels", "phone": "+91 93210 98765", "email": "gm@lakshmihotels.com", "city": "Ooty", "projectCount": 2, "status": "Active" },
+  { "id": "CLT-007", "name": "Coimbatore Exports", "phone": "+91 92109 87654", "email": "cbe@exports.co.in", "city": "Coimbatore", "projectCount": 1, "status": "Active" },
+  { "id": "CLT-008", "name": "Municipal Corporation", "phone": "+91 91098 76543", "email": "corp@tirupur.gov.in", "city": "Tirupur", "projectCount": 3, "status": "Active" },
+  { "id": "CLT-009", "name": "Infosys Realty", "phone": "+91 90987 65432", "email": "realty@infosys.com", "city": "Coimbatore", "projectCount": 2, "status": "Active" },
+  { "id": "CLT-010", "name": "Nature Stays Pvt", "phone": "+91 89876 54321", "email": "booking@naturestays.in", "city": "Valparai", "projectCount": 1, "status": "Active" }
+]

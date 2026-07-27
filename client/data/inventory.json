@@ -1,0 +1,10 @@
+[
+  { "id": "INV-001", "material": "TMT Steel Bars (Fe500)", "stock": 45, "unit": "MT", "lastPurchase": "2024-06-20", "supplier": "Coimbatore Steel Corp" },
+  { "id": "INV-002", "material": "Portland Cement (OPC 53)", "stock": 320, "unit": "Bags", "lastPurchase": "2024-06-22", "supplier": "Lakshmi Cement House" },
+  { "id": "INV-003", "material": "Red Bricks", "stock": 15000, "unit": "Nos", "lastPurchase": "2024-06-18", "supplier": "Modern Bricks & Tiles" },
+  { "id": "INV-004", "material": "River Sand", "stock": 80, "unit": "CFT", "lastPurchase": "2024-06-25", "supplier": "Raj Constructions" },
+  { "id": "INV-005", "material": "M-Sand", "stock": 120, "unit": "CFT", "lastPurchase": "2024-06-23", "supplier": "Raj Constructions" },
+  { "id": "INV-006", "material": "6mm Electrical Wire", "stock": 2500, "unit": "Mtr", "lastPurchase": "2024-06-19", "supplier": "Electra Cables Ltd" },
+  { "id": "INV-007", "material": "PVC Pipes (4 inch)", "stock": 180, "unit": "Nos", "lastPurchase": "2024-06-21", "supplier": "Plumbing Plus Store" },
+  { "id": "INV-008", "material": "Granite Tiles (2x2)", "stock": 500, "unit": "Sqft", "lastPurchase": "2024-06-17", "supplier": "Modern Bricks & Tiles" }
+]

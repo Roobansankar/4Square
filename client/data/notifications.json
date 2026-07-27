@@ -1,0 +1,8 @@
+[
+  { "id": 1, "title": "New Project Created", "message": "Smart Office Complex has been added to active projects", "time": "2 min ago", "type": "info", "read": false },
+  { "id": 2, "title": "Contractor Assigned", "message": "Raj Constructions assigned to Skyline Tower Residency", "time": "1 hr ago", "type": "success", "read": false },
+  { "id": 3, "title": "Material Purchased", "message": "Steel order of ₹2.5L placed with Coimbatore Steel Corp", "time": "3 hr ago", "type": "info", "read": false },
+  { "id": 4, "title": "Site Inspection Done", "message": "Heritage Hotel Renovation passed quality inspection", "time": "5 hr ago", "type": "success", "read": true },
+  { "id": 5, "title": "Client Meeting Scheduled", "message": "Meeting with Infosys Realty on July 12 at 11:00 AM", "time": "Yesterday", "type": "warning", "read": true },
+  { "id": 6, "title": "Bill Pending Approval", "message": "Electra Cables Ltd bill of ₹1.8L awaiting approval", "time": "Yesterday", "type": "warning", "read": true }
+]

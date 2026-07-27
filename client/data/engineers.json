@@ -1,0 +1,8 @@
+[
+  { "id": "ENG-001", "name": "Arjun Sharma", "designation": "Senior Civil Engineer", "projects": 3, "phone": "+91 98765 11111", "status": "Active", "avatar": "AS" },
+  { "id": "ENG-002", "name": "Suresh Nair", "designation": "Structural Engineer", "projects": 3, "phone": "+91 97654 22222", "status": "Active", "avatar": "SN" },
+  { "id": "ENG-003", "name": "Kiran Reddy", "designation": "Civil Engineer", "projects": 2, "phone": "+91 96543 33333", "status": "Active", "avatar": "KR" },
+  { "id": "ENG-004", "name": "Pradeep Singh", "designation": "Electrical Engineer", "projects": 2, "phone": "+91 95432 44444", "status": "Active", "avatar": "PS" },
+  { "id": "ENG-005", "name": "Deepa Krishnan", "designation": "Architect", "projects": 1, "phone": "+91 94321 55555", "status": "Active", "avatar": "DK" },
+  { "id": "ENG-006", "name": "Rajan Pillai", "designation": "MEP Engineer", "projects": 0, "phone": "+91 93210 66666", "status": "On Leave", "avatar": "RP" }
+]

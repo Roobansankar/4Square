@@ -1,0 +1,951 @@
+[
+  {
+    "id": "team-a",
+    "name": "Team A",
+    "project": "Luxury Villa",
+    "leader": "Civil Engineer Arun",
+    "createdDate": "2026-01-10",
+    "status": "Active",
+    "categories": [
+      {
+        "category": "Civil Engineer",
+        "members": [
+          {
+            "id": "mem-001",
+            "name": "Arun Kumar",
+            "role": "Site Engineer",
+            "phone": "9840100001",
+            "experience": "3 years",
+            "dailyWage": 1850,
+            "joiningDate": "2023-03-19",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Reviewing structural drawings"
+          }
+        ]
+      },
+      {
+        "category": "Contractor",
+        "members": [
+          {
+            "id": "mem-002",
+            "name": "Raj Builders",
+            "role": "Contractor",
+            "phone": "9840100002",
+            "experience": "4 years",
+            "dailyWage": 2100,
+            "joiningDate": "2023-04-25",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Coordinating subcontractor schedules"
+          }
+        ]
+      },
+      {
+        "category": "Interior Supervisor",
+        "members": [
+          {
+            "id": "mem-003",
+            "name": "Sathish",
+            "role": "Interior Supervisor",
+            "phone": "9840100003",
+            "experience": "5 years",
+            "dailyWage": 1500,
+            "joiningDate": "2023-06-01",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Inspecting interior finishing work"
+          }
+        ]
+      },
+      {
+        "category": "Masonry",
+        "members": [
+          {
+            "id": "mem-004",
+            "name": "Kumar",
+            "role": "Mason",
+            "phone": "9840100004",
+            "experience": "6 years",
+            "dailyWage": 900,
+            "joiningDate": "2023-07-08",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Brick wall construction - 1st floor"
+          },
+          {
+            "id": "mem-005",
+            "name": "Ravi",
+            "role": "Mason",
+            "phone": "9840100005",
+            "experience": "8 years",
+            "dailyWage": 950,
+            "joiningDate": "2023-08-14",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Brick wall construction - 1st floor"
+          },
+          {
+            "id": "mem-006",
+            "name": "Mani",
+            "role": "Mason",
+            "phone": "9840100006",
+            "experience": "10 years",
+            "dailyWage": 850,
+            "joiningDate": "2023-09-20",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Brick wall construction - 1st floor"
+          }
+        ]
+      },
+      {
+        "category": "Centering",
+        "members": [
+          {
+            "id": "mem-007",
+            "name": "Selvam",
+            "role": "Centering Worker",
+            "phone": "9840100007",
+            "experience": "12 years",
+            "dailyWage": 850,
+            "joiningDate": "2023-10-27",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Shuttering for roof slab"
+          },
+          {
+            "id": "mem-008",
+            "name": "Babu",
+            "role": "Centering Worker",
+            "phone": "9840100008",
+            "experience": "2 years",
+            "dailyWage": 900,
+            "joiningDate": "2023-12-03",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Shuttering for roof slab"
+          }
+        ]
+      },
+      {
+        "category": "Electrician",
+        "members": [
+          {
+            "id": "mem-009",
+            "name": "Karthik",
+            "role": "Electrician",
+            "phone": "9840100009",
+            "experience": "3 years",
+            "dailyWage": 900,
+            "joiningDate": "2024-01-09",
+            "status": "On Leave",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Conduit wiring - ground floor"
+          },
+          {
+            "id": "mem-010",
+            "name": "Vinoth",
+            "role": "Electrician",
+            "phone": "9840100010",
+            "experience": "4 years",
+            "dailyWage": 950,
+            "joiningDate": "2024-02-15",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Conduit wiring - ground floor"
+          }
+        ]
+      },
+      {
+        "category": "Plumber",
+        "members": [
+          {
+            "id": "mem-011",
+            "name": "Dinesh",
+            "role": "Plumber",
+            "phone": "9840100011",
+            "experience": "5 years",
+            "dailyWage": 950,
+            "joiningDate": "2024-03-23",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Pipeline fitting - bathrooms"
+          }
+        ]
+      },
+      {
+        "category": "Painter",
+        "members": [
+          {
+            "id": "mem-012",
+            "name": "Ramesh",
+            "role": "Painter",
+            "phone": "9840100012",
+            "experience": "6 years",
+            "dailyWage": 750,
+            "joiningDate": "2024-04-29",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Wall putty and primer coat"
+          }
+        ]
+      },
+      {
+        "category": "Tile Laying",
+        "members": [
+          {
+            "id": "mem-013",
+            "name": "Ajith",
+            "role": "Tile Mason",
+            "phone": "9840100013",
+            "experience": "8 years",
+            "dailyWage": 950,
+            "joiningDate": "2024-06-05",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Floor tiling - living area"
+          }
+        ]
+      },
+      {
+        "category": "Carpenter",
+        "members": [
+          {
+            "id": "mem-014",
+            "name": "Prakash",
+            "role": "Carpenter",
+            "phone": "9840100014",
+            "experience": "10 years",
+            "dailyWage": 1050,
+            "joiningDate": "2024-07-12",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Door frame installation"
+          }
+        ]
+      },
+      {
+        "category": "Landscape",
+        "members": [
+          {
+            "id": "mem-015",
+            "name": "Kumaravel",
+            "role": "Landscape Worker",
+            "phone": "9840100015",
+            "experience": "12 years",
+            "dailyWage": 700,
+            "joiningDate": "2024-08-18",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Garden layout and planting"
+          }
+        ]
+      },
+      {
+        "category": "Fabricator",
+        "members": [
+          {
+            "id": "mem-016",
+            "name": "Baskar",
+            "role": "Fabricator",
+            "phone": "9840100016",
+            "experience": "2 years",
+            "dailyWage": 1050,
+            "joiningDate": "2024-09-24",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Gate and grill fabrication"
+          }
+        ]
+      },
+      {
+        "category": "Waterproofing",
+        "members": [
+          {
+            "id": "mem-017",
+            "name": "Vignesh",
+            "role": "Waterproofing Specialist",
+            "phone": "9840100017",
+            "experience": "3 years",
+            "dailyWage": 1050,
+            "joiningDate": "2024-10-31",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Terrace waterproofing coat"
+          }
+        ]
+      },
+      {
+        "category": "Automation",
+        "members": [
+          {
+            "id": "mem-018",
+            "name": "Hari",
+            "role": "Automation Technician",
+            "phone": "9840100018",
+            "experience": "4 years",
+            "dailyWage": 1200,
+            "joiningDate": "2024-12-07",
+            "status": "On Leave",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Home automation panel setup"
+          }
+        ]
+      },
+      {
+        "category": "Glass Work",
+        "members": [
+          {
+            "id": "mem-019",
+            "name": "Imran",
+            "role": "Glass Fitter",
+            "phone": "9840100019",
+            "experience": "5 years",
+            "dailyWage": 950,
+            "joiningDate": "2025-01-13",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Window glass fitting"
+          }
+        ]
+      },
+      {
+        "category": "Earth Work",
+        "members": [
+          {
+            "id": "mem-020",
+            "name": "Murugan",
+            "role": "Earth Work Labourer",
+            "phone": "9840100020",
+            "experience": "6 years",
+            "dailyWage": 750,
+            "joiningDate": "2025-02-19",
+            "status": "Active",
+            "assignedSite": "Luxury Villa",
+            "currentTask": "Site excavation and levelling"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "team-b",
+    "name": "Team B",
+    "project": "Apartment Project",
+    "leader": "Supervisor Dinesh Prabhu",
+    "createdDate": "2026-02-05",
+    "status": "Active",
+    "categories": [
+      {
+        "category": "Civil Engineer",
+        "members": [
+          {
+            "id": "mem-021",
+            "name": "Aravind",
+            "role": "Site Engineer",
+            "phone": "9840100021",
+            "experience": "8 years",
+            "dailyWage": 1800,
+            "joiningDate": "2025-03-28",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Reviewing structural drawings"
+          }
+        ]
+      },
+      {
+        "category": "Contractor",
+        "members": [
+          {
+            "id": "mem-022",
+            "name": "Shree Constructions",
+            "role": "Contractor",
+            "phone": "9840100022",
+            "experience": "10 years",
+            "dailyWage": 2050,
+            "joiningDate": "2025-05-04",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Coordinating subcontractor schedules"
+          }
+        ]
+      },
+      {
+        "category": "Interior Supervisor",
+        "members": [
+          {
+            "id": "mem-023",
+            "name": "Manoj",
+            "role": "Interior Supervisor",
+            "phone": "9840100023",
+            "experience": "12 years",
+            "dailyWage": 1600,
+            "joiningDate": "2025-06-10",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Inspecting interior finishing work"
+          }
+        ]
+      },
+      {
+        "category": "Masonry",
+        "members": [
+          {
+            "id": "mem-024",
+            "name": "Suresh",
+            "role": "Mason",
+            "phone": "9840100024",
+            "experience": "2 years",
+            "dailyWage": 850,
+            "joiningDate": "2025-07-17",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Brick wall construction - 1st floor"
+          },
+          {
+            "id": "mem-025",
+            "name": "Ganesh",
+            "role": "Mason",
+            "phone": "9840100025",
+            "experience": "3 years",
+            "dailyWage": 900,
+            "joiningDate": "2025-08-23",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Brick wall construction - 1st floor"
+          },
+          {
+            "id": "mem-026",
+            "name": "Bala",
+            "role": "Mason",
+            "phone": "9840100026",
+            "experience": "4 years",
+            "dailyWage": 950,
+            "joiningDate": "2025-09-29",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Brick wall construction - 1st floor"
+          }
+        ]
+      },
+      {
+        "category": "Centering",
+        "members": [
+          {
+            "id": "mem-027",
+            "name": "Prem",
+            "role": "Centering Worker",
+            "phone": "9840100027",
+            "experience": "5 years",
+            "dailyWage": 800,
+            "joiningDate": "2025-11-05",
+            "status": "On Leave",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Shuttering for roof slab"
+          },
+          {
+            "id": "mem-028",
+            "name": "Anand",
+            "role": "Centering Worker",
+            "phone": "9840100028",
+            "experience": "6 years",
+            "dailyWage": 850,
+            "joiningDate": "2025-12-12",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Shuttering for roof slab"
+          }
+        ]
+      },
+      {
+        "category": "Electrician",
+        "members": [
+          {
+            "id": "mem-029",
+            "name": "Sridhar",
+            "role": "Electrician",
+            "phone": "9840100029",
+            "experience": "8 years",
+            "dailyWage": 1000,
+            "joiningDate": "2026-01-18",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Conduit wiring - ground floor"
+          }
+        ]
+      },
+      {
+        "category": "Plumber",
+        "members": [
+          {
+            "id": "mem-030",
+            "name": "Gopal",
+            "role": "Plumber",
+            "phone": "9840100030",
+            "experience": "10 years",
+            "dailyWage": 850,
+            "joiningDate": "2026-02-24",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Pipeline fitting - bathrooms"
+          }
+        ]
+      },
+      {
+        "category": "Painter",
+        "members": [
+          {
+            "id": "mem-031",
+            "name": "Elango",
+            "role": "Painter",
+            "phone": "9840100031",
+            "experience": "12 years",
+            "dailyWage": 800,
+            "joiningDate": "2026-04-02",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Wall putty and primer coat"
+          }
+        ]
+      },
+      {
+        "category": "Tile Laying",
+        "members": [
+          {
+            "id": "mem-032",
+            "name": "Senthil",
+            "role": "Tile Mason",
+            "phone": "9840100032",
+            "experience": "2 years",
+            "dailyWage": 1000,
+            "joiningDate": "2026-05-09",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Floor tiling - living area"
+          }
+        ]
+      },
+      {
+        "category": "Carpenter",
+        "members": [
+          {
+            "id": "mem-033",
+            "name": "Mahesh",
+            "role": "Carpenter",
+            "phone": "9840100033",
+            "experience": "3 years",
+            "dailyWage": 950,
+            "joiningDate": "2026-06-15",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Door frame installation"
+          }
+        ]
+      },
+      {
+        "category": "Landscape",
+        "members": [
+          {
+            "id": "mem-034",
+            "name": "Yuvaraj",
+            "role": "Landscape Worker",
+            "phone": "9840100034",
+            "experience": "4 years",
+            "dailyWage": 750,
+            "joiningDate": "2026-07-22",
+            "status": "Active",
+            "assignedSite": "Apartment Project",
+            "currentTask": "Garden layout and planting"
+          }
+        ]
+      },
+      {
+        "category": "Fabricator",
+        "members": []
+      },
+      {
+        "category": "Waterproofing",
+        "members": []
+      },
+      {
+        "category": "Automation",
+        "members": []
+      },
+      {
+        "category": "Glass Work",
+        "members": []
+      },
+      {
+        "category": "Earth Work",
+        "members": []
+      }
+    ]
+  },
+  {
+    "id": "team-c",
+    "name": "Team C",
+    "project": "Commercial Building",
+    "leader": "Contractor Manoharan",
+    "createdDate": "2026-03-01",
+    "status": "Inactive",
+    "categories": [
+      {
+        "category": "Civil Engineer",
+        "members": [
+          {
+            "id": "mem-035",
+            "name": "Bala Murugan",
+            "role": "Site Engineer",
+            "phone": "9840100035",
+            "experience": "5 years",
+            "dailyWage": 1900,
+            "joiningDate": "2026-08-28",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Reviewing structural drawings"
+          }
+        ]
+      },
+      {
+        "category": "Contractor",
+        "members": [
+          {
+            "id": "mem-036",
+            "name": "Sri Ganesh Constructions",
+            "role": "Contractor",
+            "phone": "9840100036",
+            "experience": "6 years",
+            "dailyWage": 2000,
+            "joiningDate": "2026-10-04",
+            "status": "On Leave",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Coordinating subcontractor schedules"
+          }
+        ]
+      },
+      {
+        "category": "Interior Supervisor",
+        "members": [
+          {
+            "id": "mem-037",
+            "name": "Naveen",
+            "role": "Interior Supervisor",
+            "phone": "9840100037",
+            "experience": "8 years",
+            "dailyWage": 1550,
+            "joiningDate": "2026-11-10",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Inspecting interior finishing work"
+          }
+        ]
+      },
+      {
+        "category": "Masonry",
+        "members": [
+          {
+            "id": "mem-038",
+            "name": "Muthu",
+            "role": "Mason",
+            "phone": "9840100038",
+            "experience": "10 years",
+            "dailyWage": 950,
+            "joiningDate": "2026-12-17",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Brick wall construction - 1st floor"
+          },
+          {
+            "id": "mem-039",
+            "name": "Raja",
+            "role": "Mason",
+            "phone": "9840100039",
+            "experience": "12 years",
+            "dailyWage": 850,
+            "joiningDate": "2027-01-23",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Brick wall construction - 1st floor"
+          },
+          {
+            "id": "mem-040",
+            "name": "Sekar",
+            "role": "Mason",
+            "phone": "9840100040",
+            "experience": "2 years",
+            "dailyWage": 900,
+            "joiningDate": "2027-03-01",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Brick wall construction - 1st floor"
+          },
+          {
+            "id": "mem-041",
+            "name": "Ilango",
+            "role": "Mason",
+            "phone": "9840100041",
+            "experience": "3 years",
+            "dailyWage": 950,
+            "joiningDate": "2027-04-07",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Brick wall construction - 1st floor"
+          }
+        ]
+      },
+      {
+        "category": "Centering",
+        "members": [
+          {
+            "id": "mem-042",
+            "name": "Kannan",
+            "role": "Centering Worker",
+            "phone": "9840100042",
+            "experience": "4 years",
+            "dailyWage": 800,
+            "joiningDate": "2027-05-14",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Shuttering for roof slab"
+          },
+          {
+            "id": "mem-043",
+            "name": "Arul",
+            "role": "Centering Worker",
+            "phone": "9840100043",
+            "experience": "5 years",
+            "dailyWage": 850,
+            "joiningDate": "2027-06-20",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Shuttering for roof slab"
+          },
+          {
+            "id": "mem-044",
+            "name": "Siva",
+            "role": "Centering Worker",
+            "phone": "9840100044",
+            "experience": "6 years",
+            "dailyWage": 900,
+            "joiningDate": "2027-07-27",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Shuttering for roof slab"
+          }
+        ]
+      },
+      {
+        "category": "Electrician",
+        "members": [
+          {
+            "id": "mem-045",
+            "name": "Manikandan",
+            "role": "Electrician",
+            "phone": "9840100045",
+            "experience": "8 years",
+            "dailyWage": 900,
+            "joiningDate": "2027-09-02",
+            "status": "On Leave",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Conduit wiring - ground floor"
+          },
+          {
+            "id": "mem-046",
+            "name": "Prabhu",
+            "role": "Electrician",
+            "phone": "9840100046",
+            "experience": "10 years",
+            "dailyWage": 950,
+            "joiningDate": "2027-10-09",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Conduit wiring - ground floor"
+          }
+        ]
+      },
+      {
+        "category": "Plumber",
+        "members": [
+          {
+            "id": "mem-047",
+            "name": "Saravanan",
+            "role": "Plumber",
+            "phone": "9840100047",
+            "experience": "12 years",
+            "dailyWage": 950,
+            "joiningDate": "2027-11-15",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Pipeline fitting - bathrooms"
+          },
+          {
+            "id": "mem-048",
+            "name": "Vimal",
+            "role": "Plumber",
+            "phone": "9840100048",
+            "experience": "2 years",
+            "dailyWage": 850,
+            "joiningDate": "2027-12-22",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Pipeline fitting - bathrooms"
+          }
+        ]
+      },
+      {
+        "category": "Painter",
+        "members": [
+          {
+            "id": "mem-049",
+            "name": "Suriya",
+            "role": "Painter",
+            "phone": "9840100049",
+            "experience": "3 years",
+            "dailyWage": 800,
+            "joiningDate": "2028-01-28",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Wall putty and primer coat"
+          }
+        ]
+      },
+      {
+        "category": "Tile Laying",
+        "members": [
+          {
+            "id": "mem-050",
+            "name": "Dhanush",
+            "role": "Tile Mason",
+            "phone": "9840100050",
+            "experience": "4 years",
+            "dailyWage": 1000,
+            "joiningDate": "2028-03-05",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Floor tiling - living area"
+          }
+        ]
+      },
+      {
+        "category": "Carpenter",
+        "members": [
+          {
+            "id": "mem-051",
+            "name": "Ashwin",
+            "role": "Carpenter",
+            "phone": "9840100051",
+            "experience": "5 years",
+            "dailyWage": 950,
+            "joiningDate": "2028-04-11",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Door frame installation"
+          }
+        ]
+      },
+      {
+        "category": "Landscape",
+        "members": [
+          {
+            "id": "mem-052",
+            "name": "Deepak",
+            "role": "Landscape Worker",
+            "phone": "9840100052",
+            "experience": "6 years",
+            "dailyWage": 750,
+            "joiningDate": "2028-05-18",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Garden layout and planting"
+          }
+        ]
+      },
+      {
+        "category": "Fabricator",
+        "members": [
+          {
+            "id": "mem-053",
+            "name": "Rathish",
+            "role": "Fabricator",
+            "phone": "9840100053",
+            "experience": "8 years",
+            "dailyWage": 1100,
+            "joiningDate": "2028-06-24",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Gate and grill fabrication"
+          }
+        ]
+      },
+      {
+        "category": "Waterproofing",
+        "members": [
+          {
+            "id": "mem-054",
+            "name": "Karthikeyan",
+            "role": "Waterproofing Specialist",
+            "phone": "9840100054",
+            "experience": "10 years",
+            "dailyWage": 950,
+            "joiningDate": "2028-07-31",
+            "status": "On Leave",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Terrace waterproofing coat"
+          }
+        ]
+      },
+      {
+        "category": "Automation",
+        "members": [
+          {
+            "id": "mem-055",
+            "name": "Sanjay",
+            "role": "Automation Technician",
+            "phone": "9840100055",
+            "experience": "12 years",
+            "dailyWage": 1250,
+            "joiningDate": "2028-09-06",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Home automation panel setup"
+          }
+        ]
+      },
+      {
+        "category": "Glass Work",
+        "members": [
+          {
+            "id": "mem-056",
+            "name": "Vijay",
+            "role": "Glass Fitter",
+            "phone": "9840100056",
+            "experience": "2 years",
+            "dailyWage": 1000,
+            "joiningDate": "2028-10-13",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Window glass fitting"
+          }
+        ]
+      },
+      {
+        "category": "Earth Work",
+        "members": [
+          {
+            "id": "mem-057",
+            "name": "Rajkumar",
+            "role": "Earth Work Labourer",
+            "phone": "9840100057",
+            "experience": "3 years",
+            "dailyWage": 650,
+            "joiningDate": "2028-11-19",
+            "status": "Active",
+            "assignedSite": "Commercial Building",
+            "currentTask": "Site excavation and levelling"
+          }
+        ]
+      }
+    ]
+  }
+]

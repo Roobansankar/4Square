@@ -1,0 +1,11 @@
+{
+  "today": { "date": "2024-07-10", "total": 112, "present": 98, "absent": 14 },
+  "sites": [
+    { "site": "Skyline Tower Residency", "workers": 42, "present": 38 },
+    { "site": "Metro Commercial Hub", "workers": 35, "present": 30 },
+    { "site": "Heritage Hotel Renovation", "workers": 28, "present": 25 },
+    { "site": "Industrial Warehouse Block", "workers": 22, "present": 18 },
+    { "site": "Smart Office Complex", "workers": 18, "present": 15 },
+    { "site": "Sunrise Apartments Ph2", "workers": 12, "present": 9 }
+  ]
+}

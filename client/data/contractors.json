@@ -1,0 +1,8 @@
+[
+  { "id": "CON-001", "name": "Raj Constructions", "specialization": "Civil & Structural", "contact": "+91 98765 77777", "runningProjects": 3 },
+  { "id": "CON-002", "name": "Sri Balaji Electricals", "specialization": "Electrical Work", "contact": "+91 97654 88888", "runningProjects": 4 },
+  { "id": "CON-003", "name": "Kaveri Plumbing Co.", "specialization": "Plumbing & Sanitation", "contact": "+91 96543 99999", "runningProjects": 2 },
+  { "id": "CON-004", "name": "Murugan Interiors", "specialization": "Interior & Finishing", "contact": "+91 95432 00000", "runningProjects": 1 },
+  { "id": "CON-005", "name": "Annamalai Steel Works", "specialization": "Steel Fabrication", "contact": "+91 94321 11122", "runningProjects": 2 },
+  { "id": "CON-006", "name": "TN Roofing Solutions", "specialization": "Roofing & Waterproofing", "contact": "+91 93210 22233", "runningProjects": 3 }
+]
