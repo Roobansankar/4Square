@@ -1,12 +1,28 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Users, Plus, Eye, Edit2, Trash2, Search, Download, Printer, CheckCircle2 } from 'lucide-react';
+import {
+  Table, Button, Input, Select, Tag, Card, Row, Col, Statistic,
+  Space, Typography, Drawer, Descriptions, Popconfirm, message, Empty,
+} from 'antd';
+import {
+  PlusOutlined, EyeOutlined, EditOutlined, DeleteOutlined,
+  CheckCircleOutlined, DownloadOutlined, PrinterOutlined,
+  UserOutlined, TeamOutlined, UsergroupAddOutlined,
+} from '@ant-design/icons';
 import PageHeader from '@/components/PageHeader';
 import ClientForm, { type ClientRecord } from '@/components/clients/ClientForm';
 
+const { Text } = Typography;
+
 const STORAGE_KEY = '4square-clients';
-const pageSize = 6;
+
+const statusColors: Record<string, string> = {
+  Lead: 'geekblue',
+  Active: 'green',
+  Inactive: 'default',
+  Confirmed: 'cyan',
+};
 
 function downloadFile(content: string, filename: string, type: string) {
   const blob = new Blob([content], { type });
@@ -22,10 +38,10 @@ export default function ClientsPage() {
   const [records, setRecords] = useState<ClientRecord[]>([]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-  const [page, setPage] = useState(1);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<ClientRecord | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<ClientRecord | null>(null);
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -71,32 +87,28 @@ export default function ClientsPage() {
     });
   }, [records, search, statusFilter]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredRecords.length / pageSize));
-  const pageRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
-
-  useEffect(() => {
-    if (page > totalPages) setPage(totalPages);
-  }, [page, totalPages]);
-
   const handleSave = (record: ClientRecord) => {
     if (editingRecord) {
       setRecords((prev) => prev.map((item) => item.id === record.id ? record : item));
+      messageApi.success('Client updated');
     } else {
       setRecords((prev) => [record, ...prev]);
+      messageApi.success('Client created');
     }
-    setIsEditorOpen(false);
+    setDrawerOpen(false);
     setEditingRecord(null);
     setSelectedRecord(record);
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Delete this client?')) {
-      setRecords((prev) => prev.filter((item) => item.id !== id));
-    }
+    setRecords((prev) => prev.filter((item) => item.id !== id));
+    messageApi.success('Client deleted');
+    if (selectedRecord?.id === id) setSelectedRecord(null);
   };
 
   const handleApprove = (id: string) => {
     setRecords((prev) => prev.map((item) => item.id === id ? { ...item, status: 'Confirmed', updated_at: new Date().toISOString().slice(0, 10) } : item));
+    messageApi.success('Client confirmed');
   };
 
   const exportPdf = (record: ClientRecord) => {
@@ -109,115 +121,162 @@ export default function ClientsPage() {
     downloadFile(rows.map((row) => row.join(',')).join('\n'), `${record.client_code}.csv`, 'text/csv;charset=utf-8;');
   };
 
+  const openDrawer = (record?: ClientRecord) => {
+    setEditingRecord(record ?? null);
+    setDrawerOpen(true);
+  };
+
+  const columns = [
+    {
+      title: 'Client Code',
+      dataIndex: 'client_code',
+      key: 'client_code',
+      width: 160,
+      render: (val: string) => <Text code style={{ color: '#f97316' }}>{val}</Text>,
+    },
+    {
+      title: 'Client Name',
+      dataIndex: 'client_name',
+      key: 'client_name',
+      render: (val: string, record: ClientRecord) => (
+        <Button type="link" style={{ padding: 0 }} onClick={() => setSelectedRecord(record)}>
+          {val}
+        </Button>
+      ),
+    },
+    { title: 'Company', dataIndex: 'company_name', key: 'company_name', width: 180 },
+    { title: 'Phone', dataIndex: 'mobile', key: 'mobile', width: 130 },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      width: 110,
+      render: (val: string) => <Tag color={statusColors[val]}>{val}</Tag>,
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      width: 180,
+      render: (_: unknown, record: ClientRecord) => (
+        <Space size={4}>
+          <Button type="link" size="small" icon={<EyeOutlined />} onClick={() => setSelectedRecord(record)} />
+          <Button type="link" size="small" icon={<EditOutlined />} onClick={() => openDrawer(record)} />
+          <Button type="link" size="small" icon={<CheckCircleOutlined style={{ color: '#16a34a' }} />} onClick={() => handleApprove(record.id)} />
+          <Popconfirm title="Delete this client?" onConfirm={() => handleDelete(record.id)} okText="Delete" cancelText="Cancel">
+            <Button type="link" size="small" danger icon={<DeleteOutlined />} />
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
   return (
-    <div className="space-y-5">
-      <PageHeader title="Clients" subtitle="Simple client management using the requested database fields" icon={<Users size={18} />} action={<button onClick={() => { setEditingRecord(null); setSelectedRecord(null); setIsEditorOpen(true); }} className="flex items-center gap-2 rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white"><Plus size={16} /> Add Client</button>} />
+    <div>
+      {contextHolder}
+      <PageHeader
+        title="Clients"
+        subtitle="Manage client information"
+        icon={<UserOutlined />}
+        action={
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
+            Add Client
+          </Button>
+        }
+      />
 
-      <div className="flex flex-col gap-3 md:flex-row">
-        <div className="relative flex-1">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)]" />
-          <input value={search} onChange={(event) => { setSearch(event.target.value); setPage(1); }} placeholder="Search by code, name, company, city, or phone" className="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] pl-9 pr-3 py-2 text-sm" />
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {['All', 'Lead', 'Active', 'Inactive', 'Confirmed'].map((status) => (
-            <button key={status} onClick={() => { setStatusFilter(status); setPage(1); }} className={`rounded-lg px-3 py-2 text-xs font-semibold ${statusFilter === status ? 'bg-orange-500 text-white' : 'bg-[var(--muted)] text-[var(--muted-foreground)]'}`}>{status}</button>
-          ))}
-        </div>
-      </div>
+      <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+        <Col xs={24} sm={8}>
+          <Card size="small">
+            <Statistic title="Total Clients" value={records.length} prefix={<TeamOutlined />} />
+          </Card>
+        </Col>
+        <Col xs={12} sm={8}>
+          <Card size="small">
+            <Statistic title="Active / Confirmed" value={records.filter((r) => r.status === 'Active' || r.status === 'Confirmed').length} prefix={<CheckCircleOutlined />} valueStyle={{ color: '#16a34a' }} />
+          </Card>
+        </Col>
+        <Col xs={12} sm={8}>
+          <Card size="small">
+            <Statistic title="Leads" value={records.filter((r) => r.status === 'Lead').length} prefix={<UsergroupAddOutlined />} valueStyle={{ color: '#1677ff' }} />
+          </Card>
+        </Col>
+      </Row>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-sm text-[var(--muted-foreground)]">Total Clients</p><p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">{records.length}</p></div>
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-sm text-[var(--muted-foreground)]">Active</p><p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">{records.filter((item) => item.status === 'Active' || item.status === 'Confirmed').length}</p></div>
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4"><p className="text-sm text-[var(--muted-foreground)]">Leads</p><p className="mt-2 text-2xl font-semibold text-[var(--foreground)]">{records.filter((item) => item.status === 'Lead').length}</p></div>
-      </div>
+      <Card size="small" style={{ marginBottom: 16 }} bodyStyle={{ padding: '12px 16px' }}>
+        <Space wrap>
+          <Input.Search
+            placeholder="Search by code, name, company, city, or phone"
+            allowClear
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{ width: 340 }}
+          />
+          <Select
+            value={statusFilter}
+            onChange={(val) => setStatusFilter(val)}
+            style={{ width: 140 }}
+            options={[
+              { value: 'All', label: 'All Status' },
+              { value: 'Lead', label: 'Lead' },
+              { value: 'Active', label: 'Active' },
+              { value: 'Inactive', label: 'Inactive' },
+              { value: 'Confirmed', label: 'Confirmed' },
+            ]}
+          />
+        </Space>
+      </Card>
 
-      {!isEditorOpen ? (
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-[var(--muted)]">
-                <tr>
-                  {['Client Code', 'Client Name', 'Company', 'Phone', 'Status', 'Actions'].map((header) => <th key={header} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">{header}</th>)}
-                </tr>
-              </thead>
-              <tbody>
-                {pageRecords.map((record) => (
-                  <tr key={record.id} className="border-t border-[var(--border)]">
-                    <td className="px-4 py-3 font-mono text-xs font-semibold text-orange-600">{record.client_code}</td>
-                    <td className="px-4 py-3">{record.client_name}</td>
-                    <td className="px-4 py-3">{record.company_name}</td>
-                    <td className="px-4 py-3">{record.mobile}</td>
-                    <td className="px-4 py-3"><span className="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-semibold text-orange-700">{record.status}</span></td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-1">
-                        <button onClick={() => setSelectedRecord(record)} className="rounded-lg p-1.5 text-blue-600 hover:bg-blue-100"><Eye size={13} /></button>
-                        <button onClick={() => { setEditingRecord(record); setIsEditorOpen(true); }} className="rounded-lg p-1.5 text-orange-600 hover:bg-orange-100"><Edit2 size={13} /></button>
-                        <button onClick={() => handleApprove(record.id)} className="rounded-lg p-1.5 text-green-600 hover:bg-green-100"><CheckCircle2 size={13} /></button>
-                        <button onClick={() => handleDelete(record.id)} className="rounded-lg p-1.5 text-red-600 hover:bg-red-100"><Trash2 size={13} /></button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="flex items-center justify-between border-t border-[var(--border)] px-4 py-3 text-xs text-[var(--muted-foreground)]">
-            <span>Showing {pageRecords.length} of {filteredRecords.length} clients</span>
-            <div className="flex gap-2">
-              <button onClick={() => setPage((prev) => Math.max(1, prev - 1))} className="rounded-lg border border-[var(--border)] px-3 py-1">Prev</button>
-              <span className="rounded-lg bg-orange-500 px-3 py-1 text-white">{page}</span>
-              <button onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))} className="rounded-lg border border-[var(--border)] px-3 py-1">Next</button>
+      <Card bodyStyle={{ padding: 0 }}>
+        <Table
+          dataSource={filteredRecords}
+          columns={columns}
+          rowKey="id"
+          pagination={{ pageSize: 10, showTotal: (total) => `${total} clients total` }}
+          size="middle"
+          scroll={{ x: 'max-content' }}
+          locale={{ emptyText: <Empty description="No clients found" /> }}
+        />
+      </Card>
+
+      {selectedRecord && (
+        <Card size="small" style={{ marginTop: 16 }}>
+          <Space direction="vertical" size={16} style={{ width: '100%' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <Text strong style={{ fontSize: 16 }}>{selectedRecord.client_name}</Text>
+                <br />
+                <Text type="secondary">{selectedRecord.client_code} · {selectedRecord.company_name}</Text>
+              </div>
+              <Tag color={statusColors[selectedRecord.status]}>{selectedRecord.status}</Tag>
             </div>
-          </div>
-        </div>
-      ) : (
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 sm:p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold text-[var(--foreground)]">{editingRecord ? 'Edit Client' : 'Create Client'}</h3>
-              <p className="text-sm text-[var(--muted-foreground)]">Capture the client information using the requested master fields only.</p>
-            </div>
-            <button onClick={() => { setIsEditorOpen(false); setEditingRecord(null); }} className="rounded-lg border border-[var(--border)] p-2">×</button>
-          </div>
-          <ClientForm initialData={editingRecord} onSave={handleSave} onCancel={() => { setIsEditorOpen(false); setEditingRecord(null); }} />
-        </div>
+            <Descriptions size="small" column={{ xs: 1, sm: 2 }} bordered>
+              <Descriptions.Item label="Phone">{selectedRecord.mobile}</Descriptions.Item>
+              <Descriptions.Item label="Email">{selectedRecord.email}</Descriptions.Item>
+              <Descriptions.Item label="City">{selectedRecord.city}</Descriptions.Item>
+              <Descriptions.Item label="State">{selectedRecord.state}</Descriptions.Item>
+              <Descriptions.Item label="Pincode">{selectedRecord.pincode}</Descriptions.Item>
+              <Descriptions.Item label="GST">{selectedRecord.gst_number}</Descriptions.Item>
+              <Descriptions.Item label="Address" span={2}>{selectedRecord.address}</Descriptions.Item>
+              <Descriptions.Item label="Remarks" span={2}>{selectedRecord.remarks || '—'}</Descriptions.Item>
+            </Descriptions>
+            <Space>
+              <Button icon={<DownloadOutlined />} onClick={() => exportPdf(selectedRecord)}>Export PDF</Button>
+              <Button icon={<DownloadOutlined />} onClick={() => exportExcel(selectedRecord)}>Export Excel</Button>
+              <Button icon={<PrinterOutlined />} onClick={() => window.print()}>Print</Button>
+            </Space>
+          </Space>
+        </Card>
       )}
 
-      {selectedRecord && !isEditorOpen && (
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 sm:p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold text-[var(--foreground)]">{selectedRecord.client_name}</h3>
-              <p className="text-sm text-[var(--muted-foreground)]">{selectedRecord.client_code} · {selectedRecord.company_name}</p>
-            </div>
-            <button onClick={() => setSelectedRecord(null)} className="rounded-lg border border-[var(--border)] p-2">×</button>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-[var(--border)] p-4">
-              <p className="text-sm font-semibold">Contact</p>
-              <div className="mt-2 space-y-1 text-sm text-[var(--muted-foreground)]">
-                <p>Phone: {selectedRecord.mobile}</p>
-                <p>Email: {selectedRecord.email}</p>
-                <p>City: {selectedRecord.city}</p>
-                <p>Status: {selectedRecord.status}</p>
-              </div>
-            </div>
-            <div className="rounded-xl border border-[var(--border)] p-4">
-              <p className="text-sm font-semibold">Address</p>
-              <div className="mt-2 space-y-1 text-sm text-[var(--muted-foreground)]">
-                <p>{selectedRecord.address}</p>
-                <p>{selectedRecord.city}, {selectedRecord.state} - {selectedRecord.pincode}</p>
-                <p>GST: {selectedRecord.gst_number}</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-end gap-2">
-            <button onClick={() => exportPdf(selectedRecord)} className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-sm"><Download size={15} /> Export PDF</button>
-            <button onClick={() => exportExcel(selectedRecord)} className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-sm"><Download size={15} /> Export Excel</button>
-            <button onClick={() => window.print()} className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-sm"><Printer size={15} /> Print</button>
-          </div>
-        </div>
-      )}
+      <Drawer
+        title={editingRecord ? 'Edit Client' : 'Create Client'}
+        open={drawerOpen}
+        onClose={() => { setDrawerOpen(false); setEditingRecord(null); }}
+        width={520}
+        destroyOnClose
+      >
+        <ClientForm initialData={editingRecord} onSave={handleSave} onCancel={() => { setDrawerOpen(false); setEditingRecord(null); }} />
+      </Drawer>
     </div>
   );
 }

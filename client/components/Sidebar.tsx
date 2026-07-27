@@ -123,9 +123,10 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
           background: 'var(--sidebar-bg)',
           overflow: 'auto',
           height: '100vh',
-          position: 'sticky',
+          position: 'fixed',
           top: 0,
           left: 0,
+          zIndex: 99,
           borderRight: '1px solid var(--border)',
         }}
       >

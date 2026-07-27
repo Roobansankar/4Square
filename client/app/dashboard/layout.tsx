@@ -41,7 +41,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         mobileOpen={mobileOpen}
         onMobileClose={() => setMobileOpen(false)}
       />
-      <Layout>
+      <Layout style={{ marginLeft: collapsed ? 68 : 260, transition: 'margin-left 0.3s' }}>
         <ConfigProvider
           theme={{
             algorithm: dark ? theme.darkAlgorithm : theme.defaultAlgorithm,

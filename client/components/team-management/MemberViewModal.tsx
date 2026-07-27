@@ -1,9 +1,16 @@
 'use client';
 
-import Modal from './Modal';
-import StatusBadge from '@/components/StatusBadge';
+import { Modal, Descriptions, Tag, Avatar, Space, Typography } from 'antd';
 import { formatCurrency } from '@/lib/helpers';
 import type { TeamMember } from '@/types/team';
+
+const { Text } = Typography;
+
+const statusColors: Record<string, string> = {
+  Active: 'green',
+  'On Leave': 'orange',
+  Inactive: 'default',
+};
 
 interface MemberViewModalProps {
   member: TeamMember;
@@ -16,36 +23,30 @@ function initials(name: string) {
 }
 
 export default function MemberViewModal({ member, category, onClose }: MemberViewModalProps) {
-  const rows: Array<[string, string]> = [
-    ['Role', member.role],
-    ['Category', category],
-    ['Phone Number', member.phone],
-    ['Experience', member.experience],
-    ['Daily Wage', formatCurrency(member.dailyWage)],
-    ['Joining Date', member.joiningDate],
-    ['Assigned Site', member.assignedSite],
-    ['Current Task', member.currentTask || '—'],
-  ];
-
   return (
-    <Modal title={member.name} subtitle="Member details" onClose={onClose} width="max-w-md">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-100 text-lg font-semibold text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
-          {initials(member.name)}
-        </div>
-        <div>
-          <p className="font-semibold text-[var(--foreground)]">{member.name}</p>
-          <StatusBadge status={member.status} />
-        </div>
-      </div>
-      <div className="space-y-2 text-sm">
-        {rows.map(([label, value]) => (
-          <div key={label} className="flex justify-between gap-4 border-b border-[var(--border)] pb-2">
-            <span className="text-[var(--muted-foreground)]">{label}</span>
-            <span className="font-medium text-[var(--foreground)] text-right">{value}</span>
+    <Modal title={null} open onCancel={onClose} footer={null} width={520}>
+      <Space direction="vertical" size={16} style={{ width: '100%' }}>
+        <Space>
+          <Avatar size={56} style={{ backgroundColor: '#f97316', fontSize: 20 }}>
+            {initials(member.name)}
+          </Avatar>
+          <div>
+            <Text strong style={{ fontSize: 16 }}>{member.name}</Text>
+            <br />
+            <Tag color={statusColors[member.status]}>{member.status}</Tag>
           </div>
-        ))}
-      </div>
+        </Space>
+        <Descriptions column={2} size="small" bordered>
+          <Descriptions.Item label="Role">{member.role}</Descriptions.Item>
+          <Descriptions.Item label="Category">{category}</Descriptions.Item>
+          <Descriptions.Item label="Phone">{member.phone}</Descriptions.Item>
+          <Descriptions.Item label="Experience">{member.experience}</Descriptions.Item>
+          <Descriptions.Item label="Daily Wage">{formatCurrency(member.dailyWage)}</Descriptions.Item>
+          <Descriptions.Item label="Joining Date">{member.joiningDate}</Descriptions.Item>
+          <Descriptions.Item label="Assigned Site">{member.assignedSite}</Descriptions.Item>
+          <Descriptions.Item label="Current Task" span={2}>{member.currentTask || '—'}</Descriptions.Item>
+        </Descriptions>
+      </Space>
     </Modal>
   );
 }

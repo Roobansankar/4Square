@@ -14,6 +14,7 @@ const { Text } = Typography;
 const { TextArea } = Input;
 
 const STORAGE_KEY = '4square-projects';
+const DATA_VERSION = '2026';
 
 function normalizeStatus(status?: string): Project['status'] {
   const normalized = status?.trim().toLowerCase();
@@ -71,8 +72,9 @@ export default function ProjectsPage() {
     if (typeof window === 'undefined') return;
 
     const storedProjects = window.localStorage.getItem(STORAGE_KEY);
+    const storedVersion = window.localStorage.getItem(`${STORAGE_KEY}_version`);
 
-    if (storedProjects) {
+    if (storedProjects && storedVersion === DATA_VERSION) {
       try {
         const parsed = JSON.parse(storedProjects) as Project[];
         if (parsed.length > 0) {
@@ -86,6 +88,7 @@ export default function ProjectsPage() {
     }
 
     setProjects(buildInitialProjects());
+    window.localStorage.setItem(`${STORAGE_KEY}_version`, DATA_VERSION);
     setHasLoaded(true);
   }, []);
 

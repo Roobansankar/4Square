@@ -1,7 +1,11 @@
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
-import { Save, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Form, Input, Select, Button, Space, Typography, Divider } from 'antd';
+import { SaveOutlined } from '@ant-design/icons';
+
+const { Text } = Typography;
+const { TextArea } = Input;
 
 export interface ClientRecord {
   id: string;
@@ -65,127 +69,104 @@ function createEmptyRecord(existing: ClientRecord[]): ClientRecord {
 }
 
 export default function ClientForm({ initialData, onSave, onCancel }: ClientFormProps) {
-  const [formData, setFormData] = useState<ClientRecord>(() => createEmptyRecord([]));
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [form] = Form.useForm();
+  const [clientCode, setClientCode] = useState('');
 
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData);
+      setClientCode(initialData.client_code);
+      form.setFieldsValue(initialData);
     } else {
       const stored = window.localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const records = JSON.parse(stored) as ClientRecord[];
-        setFormData(createEmptyRecord(records));
-      }
+      const records = stored ? JSON.parse(stored) as ClientRecord[] : [];
+      const code = createEmptyRecord(records).client_code;
+      setClientCode(code);
+      form.setFieldsValue({ client_code: code, status: 'Lead', client_type: 'Individual' });
     }
-  }, [initialData]);
+  }, [initialData, form]);
 
-  const validate = () => {
-    const nextErrors: Record<string, string> = {};
-    if (!formData.client_name.trim()) nextErrors.client_name = 'Client name is required';
-    if (!formData.mobile.trim()) nextErrors.mobile = 'Mobile number is required';
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) nextErrors.email = 'Provide a valid email';
-    if (!formData.address.trim() && !formData.city.trim() && !formData.state.trim()) {
-      nextErrors.address = 'Address, city, or state is required';
-    }
-    setErrors(nextErrors);
-    return Object.keys(nextErrors).length === 0;
-  };
-
-  const updateField = (field: keyof ClientRecord, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!validate()) return;
-
-    const payload: ClientRecord = {
-      ...formData,
-      id: formData.id || `client-${Date.now()}`,
-      updated_at: new Date().toISOString().slice(0, 10),
-      created_at: formData.created_at || new Date().toISOString().slice(0, 10),
-    };
-
-    onSave(payload);
+  const handleSubmit = () => {
+    form.validateFields().then((values) => {
+      const payload: ClientRecord = {
+        ...values,
+        id: initialData?.id || `client-${Date.now()}`,
+        client_code: clientCode,
+        created_at: initialData?.created_at || new Date().toISOString().slice(0, 10),
+        updated_at: new Date().toISOString().slice(0, 10),
+      };
+      onSave(payload);
+      form.resetFields();
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="rounded-xl border border-[var(--border)] p-4 space-y-4">
-        <h3 className="font-semibold text-[var(--foreground)]">Client Details</h3>
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Client Code</label>
-            <input value={formData.client_code} readOnly className="w-full rounded-lg border border-[var(--border)] bg-[var(--muted)] px-3 py-2 text-sm" />
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Client Type</label>
-            <select value={formData.client_type} onChange={(event) => updateField('client_type', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm">
-              {clientTypes.map((type) => <option key={type} value={type}>{type}</option>)}
-            </select>
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Client Name</label>
-            <input value={formData.client_name} onChange={(event) => updateField('client_name', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-            <p className="text-xs text-red-500">{errors.client_name}</p>
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Company Name</label>
-            <input value={formData.company_name} onChange={(event) => updateField('company_name', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Mobile</label>
-            <input value={formData.mobile} onChange={(event) => updateField('mobile', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-            <p className="text-xs text-red-500">{errors.mobile}</p>
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Email</label>
-            <input value={formData.email} onChange={(event) => updateField('email', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-            <p className="text-xs text-red-500">{errors.email}</p>
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Address</label>
-            <input value={formData.address} onChange={(event) => updateField('address', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">City</label>
-            <input value={formData.city} onChange={(event) => updateField('city', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">State</label>
-            <input value={formData.state} onChange={(event) => updateField('state', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Pincode</label>
-            <input value={formData.pincode} onChange={(event) => updateField('pincode', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">GST Number</label>
-            <input value={formData.gst_number} onChange={(event) => updateField('gst_number', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-          </div>
-          <div className="space-y-1">
-            <label className="text-sm font-medium">Status</label>
-            <select value={formData.status} onChange={(event) => updateField('status', event.target.value)} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm">
-              {statusOptions.map((status) => <option key={status} value={status}>{status}</option>)}
-            </select>
-          </div>
-          <div className="space-y-1 md:col-span-2 xl:col-span-3">
-            <label className="text-sm font-medium">Remarks</label>
-            <textarea value={formData.remarks} onChange={(event) => updateField('remarks', event.target.value)} rows={3} className="w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm" />
-          </div>
-        </div>
-        <p className="text-xs text-red-500">{errors.address}</p>
+    <Form form={form} layout="vertical" onFinish={handleSubmit} style={{ marginTop: 8 }}>
+      <Text strong style={{ fontSize: 14 }}>Client Details</Text>
+      <Divider style={{ margin: '8px 0 16px' }} />
+
+      <Form.Item name="client_code" label="Client Code">
+        <Input disabled />
+      </Form.Item>
+
+      <Form.Item name="client_type" label="Client Type">
+        <Select>
+          {clientTypes.map((t) => <Select.Option key={t} value={t}>{t}</Select.Option>)}
+        </Select>
+      </Form.Item>
+
+      <Form.Item name="client_name" label="Client Name" rules={[{ required: true, message: 'Client name is required' }]}>
+        <Input />
+      </Form.Item>
+
+      <Form.Item name="company_name" label="Company Name">
+        <Input />
+      </Form.Item>
+
+      <Form.Item name="mobile" label="Mobile" rules={[{ required: true, message: 'Mobile is required' }]}>
+        <Input />
+      </Form.Item>
+
+      <Form.Item name="email" label="Email" rules={[{ type: 'email', message: 'Invalid email' }]}>
+        <Input />
+      </Form.Item>
+
+      <Form.Item name="address" label="Address">
+        <Input />
+      </Form.Item>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 12px' }}>
+        <Form.Item name="city" label="City">
+          <Input />
+        </Form.Item>
+        <Form.Item name="state" label="State">
+          <Input />
+        </Form.Item>
+        <Form.Item name="pincode" label="Pincode">
+          <Input />
+        </Form.Item>
+        <Form.Item name="gst_number" label="GST Number">
+          <Input />
+        </Form.Item>
       </div>
 
-      <div className="flex justify-end gap-2">
-        <button type="button" onClick={onCancel} className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm">
-          <X size={16} /> Cancel
-        </button>
-        <button type="submit" className="flex items-center gap-2 rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white">
-          <Save size={16} /> Save Client
-        </button>
-      </div>
-    </form>
+      <Form.Item name="status" label="Status">
+        <Select>
+          {statusOptions.map((s) => <Select.Option key={s} value={s}>{s}</Select.Option>)}
+        </Select>
+      </Form.Item>
+
+      <Form.Item name="remarks" label="Remarks">
+        <TextArea rows={3} />
+      </Form.Item>
+
+      <Divider style={{ margin: '12px 0' }} />
+
+      <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
+        <Button onClick={onCancel}>Cancel</Button>
+        <Button type="primary" htmlType="submit" icon={<SaveOutlined />}>
+          {initialData ? 'Update Client' : 'Save Client'}
+        </Button>
+      </Space>
+    </Form>
   );
 }
