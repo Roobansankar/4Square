@@ -161,10 +161,10 @@ export default function LoginPage() {
               </svg>
             </div>
             <div>
-              <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.02em' }}>4 Square</div>
-              <Text style={{ color: '#f97316', fontSize: 10, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.02em', color: '#000435' }}>4 Square</div>
+              <div style={{ color: '#ea580c', fontSize: 10, fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                 Architects & Engineers ERP
-              </Text>
+              </div>
             </div>
           </Space>
           }
