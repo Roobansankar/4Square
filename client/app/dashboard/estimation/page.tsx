@@ -134,6 +134,8 @@ export default function Page() {
   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const [editingQuote, setEditingQuote] = useState<QuotationRecord | null>(null);
   const [editForm] = Form.useForm();
+  const [dw, setDw] = useState(640);
+  const openDrawer = (fn: () => void) => { setDw(window.innerWidth < 768 ? window.innerWidth - 1 : 640); fn(); };
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -175,7 +177,7 @@ export default function Page() {
 
   const openNewDrawer = () => {
     newForm.setFieldsValue({ quoteNo: generateQuoteNo(quotations), status: 'Draft' });
-    setNewDrawerOpen(true);
+    openDrawer(() => setNewDrawerOpen(true));
   };
 
   const handleNewSubmit = (values: Record<string, unknown>) => {
@@ -243,7 +245,7 @@ export default function Page() {
       startDate: quote.startDate ? dayjs(quote.startDate) : null,
       validTill: quote.validTill ? dayjs(quote.validTill) : null,
     });
-    setEditDrawerOpen(true);
+    openDrawer(() => setEditDrawerOpen(true));
   };
 
   const handleEditSubmit = (values: Record<string, unknown>) => {
@@ -410,37 +412,41 @@ export default function Page() {
         }
       />
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
+      <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
         <Input.Search
           placeholder="Search quote no, client, or project"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           allowClear
-          style={{ width: 320 }}
+          style={{ width: '100%', maxWidth: 360 }}
         />
       </div>
 
-      <Table
-        dataSource={filteredQuotations}
-        columns={columns}
-        rowKey="id"
-        bordered
-        pagination={{
-          pageSize: 10,
-          showSizeChanger: true,
-          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} quotations`,
-        }}
-        locale={{
-          emptyText: 'No quotations yet. Create one to get started.',
-        }}
-        style={{ background: '#fff', borderRadius: 12 }}
-        size="middle"
-      />
+      <div style={{ overflowX: 'auto' }}>
+        <Table
+          dataSource={filteredQuotations}
+          columns={columns}
+          rowKey="id"
+          bordered
+          pagination={{
+            pageSize: 10,
+            showSizeChanger: true,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} quotations`,
+            size: 'small',
+          }}
+          locale={{
+            emptyText: 'No quotations yet. Create one to get started.',
+          }}
+          style={{ background: '#fff', borderRadius: 12, minWidth: 800 }}
+          size="middle"
+          scroll={{ x: 'max-content' }}
+        />
+      </div>
 
       <Drawer
         title="New Quotation"
         placement="right"
-        width={640}
+        width={dw}
         open={newDrawerOpen}
         onClose={() => { setNewDrawerOpen(false); newForm.resetFields(); }}
         extra={
@@ -467,7 +473,7 @@ export default function Page() {
           <Form.Item label="Quotation title" name="title" rules={[{ required: true, message: 'Please enter title' }]}>
             <Input placeholder="e.g. House Construction Estimate" />
           </Form.Item>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0 16px' }}>
             <Form.Item label="Email" name="clientEmail">
               <Input placeholder="client@example.com" type="email" />
             </Form.Item>
@@ -514,7 +520,7 @@ export default function Page() {
       <Drawer
         title="Edit Quotation"
         placement="right"
-        width={640}
+        width={dw}
         open={editDrawerOpen}
         onClose={() => { setEditDrawerOpen(false); setEditingQuote(null); editForm.resetFields(); }}
         extra={
@@ -537,7 +543,7 @@ export default function Page() {
           <Form.Item label="Quotation title" name="title" rules={[{ required: true, message: 'Please enter title' }]}>
             <Input placeholder="e.g. House Construction Estimate" />
           </Form.Item>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0 16px' }}>
             <Form.Item label="Email" name="clientEmail">
               <Input placeholder="client@example.com" type="email" />
             </Form.Item>

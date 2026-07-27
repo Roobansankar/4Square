@@ -64,6 +64,8 @@ export default function ProjectsPage() {
   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [editForm] = Form.useForm();
+  const [dw, setDw] = useState(520);
+  const openDrawer = (fn: () => void) => { setDw(window.innerWidth < 768 ? window.innerWidth - 1 : 520); fn(); };
 
   const [newDrawerOpen, setNewDrawerOpen] = useState(false);
   const [newForm] = Form.useForm();
@@ -115,7 +117,7 @@ export default function ProjectsPage() {
       startDate: project.startDate ? dayjs(project.startDate) : null,
       endDate: project.endDate ? dayjs(project.endDate) : null,
     });
-    setEditDrawerOpen(true);
+    openDrawer(() => setEditDrawerOpen(true));
   };
 
   useEffect(() => {
@@ -364,7 +366,7 @@ export default function ProjectsPage() {
         subtitle={`${projects.length} total projects`}
         icon={<FolderOpenOutlined />}
         action={
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setNewDrawerOpen(true)}>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer(() => setNewDrawerOpen(true))}>
             New Project
           </Button>
         }
@@ -376,7 +378,7 @@ export default function ProjectsPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           allowClear
-          style={{ width: 280 }}
+          style={{ width: '100%', maxWidth: 320 }}
         />
         <Select
           value={filter}
@@ -391,27 +393,31 @@ export default function ProjectsPage() {
         />
       </div>
 
-      <Table
-        dataSource={filtered}
-        columns={columns}
-        rowKey="id"
-        bordered
-        pagination={{
-          pageSize: 10,
-          showSizeChanger: true,
-          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} projects`,
-        }}
-        locale={{
-          emptyText: 'No projects found. Create your first project to get started.',
-        }}
-        style={{ background: '#fff', borderRadius: 12 }}
-        size="middle"
-      />
+      <div style={{ overflowX: 'auto' }}>
+        <Table
+          dataSource={filtered}
+          columns={columns}
+          rowKey="id"
+          bordered
+          pagination={{
+            pageSize: 10,
+            showSizeChanger: true,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} projects`,
+            size: 'small',
+          }}
+          locale={{
+            emptyText: 'No projects found. Create your first project to get started.',
+          }}
+          style={{ background: '#fff', borderRadius: 12, minWidth: 800 }}
+          size="middle"
+          scroll={{ x: 'max-content' }}
+        />
+      </div>
 
       <Drawer
         title="New Project"
         placement="right"
-        width={520}
+        width={dw}
         open={newDrawerOpen}
         onClose={() => { setNewDrawerOpen(false); newForm.resetFields(); }}
         extra={
@@ -476,7 +482,7 @@ export default function ProjectsPage() {
       <Drawer
         title="Edit Project"
         placement="right"
-        width={520}
+        width={dw}
         open={editDrawerOpen}
         onClose={() => { setEditDrawerOpen(false); setEditingProject(null); editForm.resetFields(); }}
         extra={

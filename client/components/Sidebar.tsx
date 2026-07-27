@@ -19,6 +19,7 @@ interface SidebarProps {
   onToggle: () => void;
   mobileOpen?: boolean;
   onMobileClose?: () => void;
+  isMobile?: boolean;
 }
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -85,7 +86,7 @@ const items: MenuItem[] = [
   getItem('Settings', '/dashboard/settings', <SettingOutlined />),
 ];
 
-export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: SidebarProps) {
+export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose, isMobile }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -105,7 +106,7 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
 
   return (
     <>
-      {mobileOpen && (
+      {isMobile && mobileOpen && (
         <div
           style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 998 }}
           onClick={onMobileClose}
@@ -113,10 +114,10 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
       )}
       <Sider
         collapsible
-        collapsed={collapsed}
+        collapsed={!isMobile && collapsed}
         onCollapse={onToggle}
         width={260}
-        collapsedWidth={68}
+        collapsedWidth={isMobile ? 0 : 68}
         trigger={null}
         theme="dark"
         style={{
@@ -126,12 +127,14 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
           position: 'fixed',
           top: 0,
           left: 0,
-          zIndex: 99,
+          zIndex: 999,
           borderRight: '1px solid var(--border)',
+          transform: isMobile ? `translateX(${mobileOpen ? 0 : '-100%'})` : 'none',
+          transition: 'transform 0.3s ease',
+          willChange: isMobile ? 'transform' : 'auto',
         }}
       >
         <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-          {/* Logo */}
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : 'flex-start',
             gap: 12, padding: '20px 16px',
@@ -146,7 +149,7 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
             }}>
               <ApartmentOutlined style={{ color: 'white', fontSize: 20 }} />
             </div>
-            {!collapsed && (
+            {(!collapsed || isMobile) && (
               <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', flex: 1 }}>
                 <div style={{ fontWeight: 700, fontSize: 14, color: 'white', lineHeight: 1.2 }}>4 Square</div>
                 <div style={{ fontSize: 11, color: '#fb923c', fontWeight: 500, letterSpacing: '0.05em' }}>ARCHITECTS ERP</div>
@@ -154,7 +157,6 @@ export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose
             )}
           </div>
 
-          {/* Menu */}
           <div style={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
             <Menu
               mode="inline"

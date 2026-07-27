@@ -3,7 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { Layout, Space, Input, Badge, Button, Dropdown, Avatar } from 'antd';
 import {
-  MenuFoldOutlined, MenuUnfoldOutlined, SearchOutlined, BellOutlined, SunOutlined, MoonOutlined, UserOutlined, LogoutOutlined
+  MenuFoldOutlined, MenuUnfoldOutlined, MenuOutlined, CloseOutlined,
+  SearchOutlined, BellOutlined, SunOutlined, MoonOutlined, UserOutlined, LogoutOutlined,
 } from '@ant-design/icons';
 
 const { Header } = Layout;
@@ -14,9 +15,10 @@ interface NavbarProps {
   onMenuClick: () => void;
   onToggleCollapse: () => void;
   sidebarCollapsed: boolean;
+  isMobile?: boolean;
 }
 
-export default function Navbar({ dark, onToggleDark, onMenuClick, onToggleCollapse, sidebarCollapsed }: NavbarProps) {
+export default function Navbar({ dark, onToggleDark, onMenuClick, onToggleCollapse, sidebarCollapsed, isMobile }: NavbarProps) {
   const router = useRouter();
 
   return (
@@ -25,27 +27,29 @@ export default function Navbar({ dark, onToggleDark, onMenuClick, onToggleCollap
       height: 64, background: 'var(--card)',
       borderBottom: '1px solid var(--border)',
       display: 'flex', alignItems: 'center',
-      padding: '0 24px',
-      left: sidebarCollapsed ? 68 : 260,
+      padding: isMobile ? '0 12px' : '0 24px',
+      left: isMobile ? 0 : (sidebarCollapsed ? 68 : 260),
       transition: 'left 0.3s',
     }}>
       <Button
         type="text"
-        icon={sidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        onClick={onToggleCollapse}
-        style={{ marginRight: 16, fontSize: 16 }}
+        icon={isMobile ? <MenuOutlined /> : (sidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />)}
+        onClick={isMobile ? onMenuClick : onToggleCollapse}
+        style={{ marginRight: 12, fontSize: 16 }}
       />
 
-      <Input
-        placeholder="Search projects, clients..."
-        prefix={<SearchOutlined />}
-        style={{ maxWidth: 320, borderRadius: 8, background: 'var(--muted)' }}
-        className="sm-block"
-      />
+      {!isMobile && (
+        <Input
+          placeholder="Search projects, clients..."
+          prefix={<SearchOutlined />}
+          style={{ maxWidth: 320, borderRadius: 8, background: 'var(--muted)' }}
+          className="sm-block"
+        />
+      )}
 
       <div style={{ flex: 1 }} />
 
-      <Space size="middle">
+      <Space size={isMobile ? 'small' : 'middle'}>
         <Button type="text" icon={dark ? <SunOutlined /> : <MoonOutlined />} onClick={onToggleDark} />
 
         <Badge count={0} showZero={false} offset={[-2, 2]}>
@@ -68,7 +72,7 @@ export default function Navbar({ dark, onToggleDark, onMenuClick, onToggleCollap
         }}>
           <Space style={{ cursor: 'pointer' }}>
             <Avatar size="small" icon={<UserOutlined />} style={{ background: '#f97316' }} />
-            <span style={{ fontSize: 13, fontWeight: 600, color: dark ? '#fff' : undefined }}>Admin</span>
+            {!isMobile && <span style={{ fontSize: 13, fontWeight: 600, color: dark ? '#fff' : undefined }}>Admin</span>}
           </Space>
         </Dropdown>
       </Space>

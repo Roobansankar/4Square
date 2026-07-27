@@ -130,7 +130,8 @@ export default function DashboardPage() {
               pagination={false}
               size="small"
               showHeader={false}
-              style={{ border: 'none' }}
+              style={{ border: 'none', minWidth: 400 }}
+              scroll={{ x: 'max-content' }}
             />
           </Card>
         </Col>
