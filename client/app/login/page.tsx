@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Form, Input, Button, Checkbox, Typography, Space, Alert, Divider } from 'antd';
 import {
@@ -20,8 +20,16 @@ const features = [
 
 export default function LoginPage() {
   const router = useRouter();
+  const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const handleLogin = async (values: { email: string; password: string; remember: boolean }) => {
     setError('');
@@ -37,18 +45,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh', display: 'flex',
-      background: '#f5f5f5',
-    }}>
-      {/* Left: Hero Panel */}
-      <div style={{
-        flex: '1 1 55%', display: 'flex', flexDirection: 'column',
-        background: 'linear-gradient(135deg, #000435 0%, #001a6e 50%, #000435 100%)',
-        position: 'relative', overflow: 'hidden', padding: '60px 48px',
-      }}>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[#f5f5f5]">
+      {/* Left: Hero Panel - hidden on mobile */}
+      <div className="relative overflow-hidden flex flex-col justify-center bg-[#000435] px-6 py-8 sm:px-10 sm:py-12 lg:px-12 lg:py-16 lg:flex-1 lg:basis-[55%] hidden lg:flex"
+        style={{
+          background: 'linear-gradient(135deg, #000435 0%, #001a6e 50%, #000435 100%)',
+        }}
+      >
         {/* Blueprint grid overlay */}
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.06 }} xmlns="http://www.w3.org/2000/svg">
+        <svg className="absolute inset-0 w-full h-full opacity-[0.06] pointer-events-none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
               <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
@@ -62,11 +67,13 @@ export default function LoginPage() {
         </svg>
 
         {/* Glow orbs */}
-        <div style={{ position: 'absolute', top: '10%', right: '20%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)', filter: 'blur(80px)' }} />
-        <div style={{ position: 'absolute', bottom: '5%', left: '10%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute top-[10%] right-[20%] w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute bottom-[5%] left-[10%] w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)', filter: 'blur(80px)' }} />
 
-        {/* Building silhouette */}
-        <svg style={{ position: 'absolute', right: 0, bottom: 0, width: '60%', opacity: 0.08 }} viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Building silhouette - hidden on small screens */}
+        <svg className="absolute right-0 bottom-0 w-[60%] opacity-[0.08] pointer-events-none hidden lg:block" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="40" y="120" width="60" height="280" fill="white" />
           <rect x="50" y="140" width="12" height="16" fill="white" opacity="0.3" />
           <rect x="70" y="140" width="12" height="16" fill="white" opacity="0.3" />
@@ -95,60 +102,76 @@ export default function LoginPage() {
         </svg>
 
         {/* Content */}
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+        <div className="relative z-10 flex flex-col justify-center flex-1">
           {/* Logo + Brand */}
-          <Space size={16} style={{ marginBottom: 48 }}>
-            <div style={{
-              width: 52, height: 52, borderRadius: 14,
-              background: 'linear-gradient(135deg, #f97316, #ea580c)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 8px 24px rgba(249,115,22,0.3)',
-            }}>
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <Space size={12} className="mb-6 sm:mb-8 lg:mb-12" style={{}}>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-[52px] lg:h-[52px] rounded-[10px] sm:rounded-[12px] lg:rounded-[14px] flex items-center justify-center"
+              style={{
+                background: 'linear-gradient(135deg, #f97316, #ea580c)',
+                boxShadow: '0 8px 24px rgba(249,115,22,0.3)',
+              }}>
+              <svg width="20" height="20" className="sm:w-[22px] sm:h-[22px] lg:w-[26px] lg:h-[26px]" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 21h18" /><path d="M5 21V7l8-4v18" /><path d="M19 21V11l-6-4" /><path d="M9 9v.01" /><path d="M9 12v.01" /><path d="M9 15v.01" /><path d="M9 18v.01" />
               </svg>
             </div>
             <div>
-              <Title level={3} style={{ color: 'white', margin: 0, fontWeight: 700, letterSpacing: '-0.02em' }}>4 Square</Title>
-              <Text style={{ color: '#fb923c', fontSize: 11, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+              <Title level={4} className="!text-base sm:!text-lg lg:!text-xl" style={{ color: 'white', margin: 0, fontWeight: 700, letterSpacing: '-0.02em' }}>4 Square</Title>
+              <Text className="text-[10px] sm:text-[11px]" style={{ color: '#fb923c', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                 Architects & Engineers ERP
               </Text>
             </div>
           </Space>
 
-          <Title level={1} style={{ color: 'white', fontSize: 36, fontWeight: 700, lineHeight: 1.25, margin: 0, maxWidth: 480 }}>
+          <Title level={2} className="!text-xl sm:!text-2xl lg:!text-[36px] max-w-[280px] sm:max-w-[400px] lg:max-w-[480px]" style={{ color: 'white', fontWeight: 700, lineHeight: 1.25, margin: 0 }}>
             Manage your construction projects from{' '}
             <span style={{ color: '#fb923c' }}>blueprint to build</span>
           </Title>
-          <Text style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15, marginTop: 16, maxWidth: 440, lineHeight: 1.6 }}>
+          <Text className="text-[13px] sm:text-[14px] lg:text-[15px] max-w-[280px] sm:max-w-[380px] lg:max-w-[440px] mt-3 sm:mt-4" style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
             A complete ERP solution for architects, engineers, and construction firms.
             Track projects, manage teams, control budgets, and monitor progress in real time.
           </Text>
 
-          <Space size={20} style={{ marginTop: 40, flexWrap: 'wrap' }}>
+          <Space size={12} className="mt-6 sm:mt-8 lg:mt-10 flex-wrap" style={{}}>
             {features.map((f, i) => (
-              <Space key={i} size={8} style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>
-                <span style={{ color: '#fb923c', fontSize: 16 }}>{f.icon}</span>
+              <Space key={i} size={6} className="text-[11px] sm:text-[12px] lg:text-[13px]" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                <span className="text-[13px] sm:text-[14px] lg:text-[16px]" style={{ color: '#fb923c' }}>{f.icon}</span>
                 {f.label}
               </Space>
             ))}
           </Space>
         </div>
 
-        <Text style={{ position: 'relative', zIndex: 1, color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>
+        <Text className="relative z-10 text-[10px] sm:text-[11px] lg:text-[12px] mt-4 lg:mt-0" style={{ color: 'rgba(255,255,255,0.3)' }}>
           &copy; 2026 4 Square Architects. All rights reserved.
         </Text>
       </div>
 
       {/* Right: Login Panel */}
-      <div style={{
-        flex: '0 0 45%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 48, background: '#fff',
-      }}>
-        <div style={{ width: '100%', maxWidth: 400 }}>
-          <div style={{ marginBottom: 32 }}>
-            <Title level={3} style={{ margin: 0, fontWeight: 700, fontSize: 22 }}>Welcome back</Title>
-            <Text type="secondary" style={{ fontSize: 14, marginTop: 8, display: 'block' }}>
+      <div className="flex items-center justify-center px-6 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-16 lg:flex-[0_0_45%] bg-white">
+        <div className="w-full max-w-[400px]">
+          {/* Mobile-only branding */}
+          {isMobile && <Space size={12} className="mb-6 sm:mb-8 justify-center w-full">
+            <div className="w-10 h-10 rounded-[10px] flex items-center justify-center"
+              style={{
+                background: 'linear-gradient(135deg, #f97316, #ea580c)',
+                boxShadow: '0 8px 24px rgba(249,115,22,0.3)',
+              }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 21h18" /><path d="M5 21V7l8-4v18" /><path d="M19 21V11l-6-4" /><path d="M9 9v.01" /><path d="M9 12v.01" /><path d="M9 15v.01" /><path d="M9 18v.01" />
+              </svg>
+            </div>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.02em' }}>4 Square</div>
+              <Text style={{ color: '#f97316', fontSize: 10, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+                Architects & Engineers ERP
+              </Text>
+            </div>
+          </Space>
+          }
+
+          <div className="mb-6 sm:mb-8">
+            <Title level={3} className="!text-lg sm:!text-xl lg:!text-[22px]" style={{ margin: 0, fontWeight: 700 }}>Welcome back</Title>
+            <Text type="secondary" className="text-[13px] sm:text-[14px] mt-2 sm:mt-3 block">
               Sign in to your account to continue
             </Text>
           </div>
@@ -164,7 +187,7 @@ export default function LoginPage() {
                 prefix={<MailOutlined style={{ color: '#999' }} />}
                 placeholder="Enter your email"
                 size="large"
-                style={{ borderRadius: 12, height: 48 }}
+                className="!h-[44px] sm:!h-[48px] !rounded-[10px] sm:!rounded-[12px]"
               />
             </Form.Item>
 
@@ -173,16 +196,16 @@ export default function LoginPage() {
                 prefix={<LockOutlined style={{ color: '#999' }} />}
                 placeholder="Enter your password"
                 size="large"
-                style={{ borderRadius: 12, height: 48 }}
+                className="!h-[44px] sm:!h-[48px] !rounded-[10px] sm:!rounded-[12px]"
                 iconRender={visible => visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />}
               />
             </Form.Item>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <div className="flex justify-between items-center mb-5 sm:mb-6">
               <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Remember me</Checkbox>
+                <Checkbox className="text-[13px] sm:text-[14px]">Remember me</Checkbox>
               </Form.Item>
-              <Button type="link" style={{ padding: 0, fontSize: 13, fontWeight: 500 }}>
+              <Button type="link" className="!p-0 !text-[12px] sm:!text-[13px] !font-medium">
                 <Space size={4}>
                   <SafetyCertificateOutlined /> Forgot password?
                 </Space>
@@ -190,7 +213,7 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <Alert message={error} type="error" showIcon style={{ borderRadius: 12, marginBottom: 16 }} />
+              <Alert message={error} type="error" showIcon className="!rounded-[10px] sm:!rounded-[12px] !mb-4" />
             )}
 
             <Button
@@ -199,8 +222,8 @@ export default function LoginPage() {
               loading={loading}
               block
               size="large"
+              className="!h-[44px] sm:!h-[48px] !rounded-[10px] sm:!rounded-[12px] !font-semibold !text-[14px] sm:!text-[15px]"
               style={{
-                borderRadius: 12, height: 48, fontWeight: 600, fontSize: 15,
                 background: 'linear-gradient(135deg, #f97316, #ea580c)',
                 border: 'none', boxShadow: '0 4px 16px rgba(249,115,22,0.3)',
               }}
@@ -209,30 +232,31 @@ export default function LoginPage() {
             </Button>
           </Form>
 
-          <Divider style={{ margin: '28px 0' }} />
+          <Divider className="!my-6 sm:!my-7" />
 
-          <div style={{
-            background: '#fff9f0', borderRadius: 16, padding: 20,
-            border: '1px solid #ffedd5',
-          }}>
-            <Space direction="vertical" size={8} style={{ width: '100%' }}>
+          <div className="!rounded-[12px] sm:!rounded-[16px] p-4 sm:p-5"
+            style={{
+              background: '#fff9f0', border: '1px solid #ffedd5',
+            }}
+          >
+            <Space direction="vertical" size={6} style={{ width: '100%' }}>
               <Space>
-                <SafetyCertificateOutlined style={{ color: '#f97316' }} />
-                <Text strong style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <SafetyCertificateOutlined style={{ color: '#f97316', fontSize: 12 }} />
+                <Text strong className="!text-[11px] sm:!text-[12px]" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Demo Credentials
                 </Text>
               </Space>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div style={{ background: 'white', borderRadius: 10, padding: '10px 14px', border: '1px solid #ffedd5' }}>
-                  <Text type="secondary" style={{ fontSize: 10, display: 'block' }}>Email</Text>
-                  <Text style={{ fontSize: 13, fontWeight: 600 }}>admin@4square.com</Text>
+                  <Text type="secondary" className="!text-[10px] block">Email</Text>
+                  <Text className="!text-[12px] sm:!text-[13px] !font-semibold">admin@4square.com</Text>
                 </div>
                 <div style={{ background: 'white', borderRadius: 10, padding: '10px 14px', border: '1px solid #ffedd5' }}>
-                  <Text type="secondary" style={{ fontSize: 10, display: 'block' }}>Password</Text>
-                  <Text style={{ fontSize: 13, fontWeight: 600 }}>password123</Text>
+                  <Text type="secondary" className="!text-[10px] block">Password</Text>
+                  <Text className="!text-[12px] sm:!text-[13px] !font-semibold">password123</Text>
                 </div>
-              </div>
-            </Space>
+            </div>
+          </Space>
           </div>
         </div>
       </div>
